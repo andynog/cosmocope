@@ -7,7 +7,7 @@ Currently, the only source crawled by the tool is Github. It leverages Github's 
 ## Installation
 
 To download and install this tool, please ensure
-[Go v1.14 or later is installed](https://golang.org/dl/), then run the please run the following command from a terminal shell:
+[Go v1.14 or later is installed](https://golang.org/dl/), then run the following command from a terminal shell:
 
 ```shell
 $ go get github.com/andynog/cosmoscope
@@ -15,7 +15,8 @@ $ go get github.com/andynog/cosmoscope
 
 ## Crawling to find projects
 
-1. Open a terminal
-2. Run the tool
+1. Run this command from a terminal shell:
 
     ```$ cosmoscope```
+
+2. Usually it takes a few seconds to complete depending on your network connection.
