@@ -4,11 +4,14 @@ This tool allows you to crawl [Github](https://github.com) in order to discover 
 
 Currently, the only source crawled by the tool is Github. It leverages Github's search API to discover projects tagged with 'cosmos-sdk' topic and only public repositories can be crawled.
 
-## Installing the tool
+## Installation
 
-In order to run the tool, it is assumed that you have a recent version of (Golang)[https://golang.org/doc/install] properly setup on your machine.
+To download and install this tool, please ensure
+[Go v1.14 or later is installed](https://golang.org/dl/), then run the please run the following command from a terminal shell:
 
-```$ go install github.com/andynog/cosmoscope```
+```shell
+$ go get github.com/andynog/cosmoscope
+```
 
 ## Crawling to find projects
 
