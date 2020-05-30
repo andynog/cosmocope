@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/alexeyco/simpletable"
+    "github.com/dustin/go-humanize"
 	"github.com/schollz/progressbar/v3"
 )
 
@@ -21,6 +22,7 @@ func main() {
 			{Align: simpletable.AlignCenter, Text: "DESCRIPTION"},
 			{Align: simpletable.AlignCenter, Text: "STARS"},
 			{Align: simpletable.AlignCenter, Text: "FORKS"},
+			{Align: simpletable.AlignCenter, Text: "UPDATED"},
 		},
 	}
 	countCosmosProjects := 0
@@ -33,7 +35,7 @@ func main() {
 		progressbar.OptionEnableColorCodes(true),
 		progressbar.OptionShowBytes(false),
 		progressbar.OptionSetWidth(15),
-		progressbar.OptionSetDescription("[cyan] Crawling Github repositories with 'cosmos-sdk' topic"),
+		progressbar.OptionSetDescription("[cyan] Crawling Github repositories with 'cosmos-sdk' topic:"),
 		progressbar.OptionSetTheme(progressbar.Theme{
 			Saucer:        "[green]=",
 			SaucerHead:    "[green]>",
@@ -46,8 +48,8 @@ func main() {
 		isCosmosProject := client.LookForModules(r.HTMLURL)
 		bar.Add(1)
 		var description string
-		if len(r.Description) > 80 {
-			description = r.Description[0:78] + "..."
+		if len(r.Description) > 70 {
+			description = r.Description[0:68] + "..."
 		} else {
 			description = r.Description
 		}
@@ -59,6 +61,7 @@ func main() {
 				{Text: strings.ToValidUTF8(description, "")},
 				{Align: simpletable.AlignCenter, Text: fmt.Sprintf("%d", r.StargazersCount)},
 				{Align: simpletable.AlignCenter, Text: fmt.Sprintf("%d", r.ForksCount)},
+				{Text: humanize.Time(r.UpdatedAt)},
 			}
 			table.Body.Cells = append(table.Body.Cells, row)
 			countCosmosProjects++
