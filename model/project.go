@@ -12,4 +12,5 @@ type Project struct {
 	Stars       int       `json:"stars"`
 	Forks       int       `json:"forks"`
 	LastUpdated time.Time `json:"updated"`
+	Modules     []Module  `json:"modules,omitempty"`
 }

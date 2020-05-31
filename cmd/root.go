@@ -12,10 +12,13 @@ var version bool
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "cosmocope",
-	Short: "\rA tool to find Cosmos (cosmos.network) related projects and technologies ",
-	Long: `This tool allows you to crawl Github in order to discover Cosmos (cosmos.network) related projects.
-Currently, the only source crawled by the tool is Github. It leverages Github's search API 
-to discover projects and only public repositories can be crawled.`,
+	Short: "A tool to find Cosmos (cosmos.network) related projects and technologies",
+	Long: `
+This tool allows you to crawl Github in order to discover 
+Cosmos (cosmos.network) related projects. Currently, the 
+only source crawled by the tool is Github. It leverages 
+Github's search API to discover projects and only public 
+repositories can be crawled.`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	//Run: func(cmd *cobra.Command, args []string) {

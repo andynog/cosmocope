@@ -10,7 +10,9 @@ import (
 var discoverCmd = &cobra.Command{
 	Use:   "discover",
 	Short: "Find projects, tools, libraries and modules for the Cosmos ecosystem",
-	Long:  `Find projects, tools, libraries and modules for the Cosmos ecosystem`,
+	Long:  `
+Find projects, tools, libraries and modules for the Cosmos ecosystem.
+Currently the only commands implemented are 'projects' and 'modules'.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		cmd.Help()
 		os.Exit(1)
