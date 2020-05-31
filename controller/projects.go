@@ -16,6 +16,7 @@ func GetProjects() []model.Project {
 			Owner:       r.Owner.Login,
 			Url:         r.HTMLURL,
 			Description: r.Description,
+			Language:    r.Language,
 			Stars:       r.StargazersCount,
 			Forks:       r.ForksCount,
 			LastUpdated: r.UpdatedAt,
