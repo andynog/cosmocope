@@ -8,7 +8,7 @@ and only public repositories can be crawled. In the future, the idea is to engag
 community to add Cosmos topics to their Github public repositories in order to allow 
 the tool to discover their repositories. 
 
-*NOTE:* Because this used unauthenticated API calls to Github, there's a [rate limit](https://developer.github.com/v3/search/#rate-limit) of 10 requests per minutes so running this tool many times per minute might give you error messages.
+**NOTE:** Because this tool uses unauthenticated API calls to Github, there's a [rate limit](https://developer.github.com/v3/search/#rate-limit) of 10 requests per minutes so running this tool many times per minute might give you error messages.
 
 ## Installation
 
@@ -19,7 +19,9 @@ To download and install this tool, please ensure
 $ go get github.com/andynog/cosmocope
 ```
 
-## Discovering projects
+## Common commands
+
+### Discovering projects
 
 Run this command from a terminal shell:
 
@@ -27,10 +29,26 @@ Run this command from a terminal shell:
 $ cosmocope discover projects
 ```
 
-### JSON output
+#### JSON output
 
 If you need a JSON output instead of a printed table, use the `--json` or `-j` flag
 
 ```shell
 $ cosmocope discover projects --json
+```
+
+### Discovering modules
+
+Run this command from a terminal shell:
+
+```shell
+$ cosmocope discover modules
+```
+
+#### JSON output
+
+If you need a JSON output instead of a printed table, use the `--json` or `-j` flag
+
+```shell
+$ cosmocope discover modules --json
 ```
