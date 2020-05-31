@@ -32,8 +32,8 @@ func LookForModules(repo string) bool {
 // that contain the topic 'cosmos-sdk'. This assumes that owners of
 // Cosmos SDK project add the 'cosmos-sdk' to their projects for better
 // discovery
-func SearchGithubProjects() GithubSearchResult {
-	url := "https://api.github.com/search/repositories?q=topic:cosmos-sdk&page=1&per_page=1000"
+func SearchGithub(topic string) GithubSearchResult {
+	url := "https://api.github.com/search/repositories?q=topic:" + topic + "&page=1&per_page=1000"
 	method := "GET"
 
 	client := &http.Client{
