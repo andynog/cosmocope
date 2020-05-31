@@ -14,7 +14,8 @@ var projectsCmd = &cobra.Command{
 	Long: `This command searches for projects on Github that are tagged with the 'cosmos-sdk' topic`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("Discovering projects...")
-		controller.ListProjects()
+		projects := controller.GetProjects()
+		controller.PrintTable(projects)
 	},
 }
 
