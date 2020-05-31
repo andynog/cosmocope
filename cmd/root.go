@@ -13,9 +13,9 @@ var version bool
 var rootCmd = &cobra.Command{
 	Use:   "cosmocope",
 	Short: "\rA tool to find Cosmos (cosmos.network) related projects and technologies ",
-	Long: `This tool allows you to crawl Github in order to discover Cosmos based projects.
-Currently, the only source crawled by the tool is Github. It leverages 
-Github's search API to discover projects and only public repositories can be crawled.`,
+	Long: `This tool allows you to crawl Github in order to discover Cosmos (cosmos.network) related projects.
+Currently, the only source crawled by the tool is Github. It leverages Github's search API 
+to discover projects and only public repositories can be crawled.`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	//Run: func(cmd *cobra.Command, args []string) {
@@ -27,8 +27,6 @@ Github's search API to discover projects and only public repositories can be cra
 	//	}
 	//},
 	Version: "0.0.1",
-
-
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.

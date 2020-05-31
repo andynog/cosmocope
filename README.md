@@ -19,8 +19,12 @@ $ go get github.com/andynog/cosmocope
 
 ## Discovering projects
 
-1. Run this command from a terminal shell:
+Run this command from a terminal shell:
 
     ```$ cosmocope discover projects```
 
-2. Usually it takes a few seconds to complete depending on your network connection.
+### JSON output
+
+If you need a JSON output instead of a printed table, use the `--json` or `-j` flag
+
+    ```$ cosmocope discover projects --json```

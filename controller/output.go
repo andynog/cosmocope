@@ -1,6 +1,8 @@
 package controller
 
 import (
+	"cosmocope/model"
+	"encoding/json"
 	"fmt"
 	"strings"
 
@@ -10,7 +12,7 @@ import (
 	"github.com/schollz/progressbar/v3"
 )
 
-func PrintTable(results client.GithubSearchResult) {
+func PrintTable(projects []model.Project) {
 	table := simpletable.New()
 
 	table.Header = &simpletable.Header{
@@ -27,7 +29,7 @@ func PrintTable(results client.GithubSearchResult) {
 	countCosmosProjects := 0
 
 	// Progress Bar
-	bar := progressbar.NewOptions(len(results.Items),
+	bar := progressbar.NewOptions(len(projects),
 		//progressbar.OptionSetWriter(ansi.NewAnsiStdout()),
 		progressbar.OptionEnableColorCodes(true),
 		progressbar.OptionShowBytes(false),
@@ -41,24 +43,24 @@ func PrintTable(results client.GithubSearchResult) {
 			BarEnd:        "]",
 		}))
 
-	for _, r := range results.Items {
-		isCosmosProject := client.LookForModules(r.HTMLURL)
+	for _, p := range projects {
+		isCosmosProject := client.LookForModules(p.Url)
 		bar.Add(1)
 		var description string
-		if len(r.Description) > 60 {
-			description = r.Description[0:58] + "..."
+		if len(p.Description) > 60 {
+			description = p.Description[0:58] + "..."
 		} else {
-			description = r.Description
+			description = p.Description
 		}
 		if isCosmosProject {
 			row := []*simpletable.Cell{
-				{Text: r.Name},
-				{Text: r.Owner.Login},
-				{Text: r.HTMLURL},
+				{Text: p.Name},
+				{Text: p.Owner},
+				{Text: p.Url},
 				{Text: strings.ToValidUTF8(description, "")},
-				{Align: simpletable.AlignCenter, Text: fmt.Sprintf("%d", r.StargazersCount)},
-				{Align: simpletable.AlignCenter, Text: fmt.Sprintf("%d", r.ForksCount)},
-				{Text: humanize.Time(r.UpdatedAt)},
+				{Align: simpletable.AlignCenter, Text: fmt.Sprintf("%d", p.Stars)},
+				{Align: simpletable.AlignCenter, Text: fmt.Sprintf("%d", p.Forks)},
+				{Text: humanize.Time(p.LastUpdated)},
 			}
 			table.Body.Cells = append(table.Body.Cells, row)
 			countCosmosProjects++
@@ -78,4 +80,13 @@ func PrintTable(results client.GithubSearchResult) {
 	// Print table
 	table.SetStyle(simpletable.StyleDefault)
 	fmt.Println(table.String())
+}
+
+func PrintJSON(projects []model.Project) {
+	json, err := json.MarshalIndent(projects, "", " ")
+	if err != nil {
+		fmt.Println("Failed to print JSON results:", err)
+		return
+	}
+	fmt.Println(string(json))
 }

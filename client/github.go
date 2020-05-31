@@ -13,7 +13,7 @@ import (
 func LookForModules(repo string) bool {
 	url := repo + "/tree/master/x"
 	method := "GET"
-	client := &http.Client {
+	client := &http.Client{
 	}
 	req, err := http.NewRequest(method, url, nil)
 
