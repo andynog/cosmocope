@@ -1,12 +1,14 @@
 # cosmocope
 
-_cosmocope_ (Cosmos + Telescope) is a tool that helps you discover projects, tools, SDKs, libraries and modules that are part of the Cosmos Ecosystem
+_cosmocope_ (Cosmos + Telescope) is a tool that helps you discover projects, tools, SDKs, libraries and modules that are part of the [Cosmos](https://cosmos.network) Ecosystem
 
 Currently, the only source crawled by the tool is [Github](https://github.com). 
-It leverages Github's search API to discover projects tagged with 'cosmos-sdk' topic 
+It leverages [Github's search API](https://developer.github.com/v3/search) to discover projects tagged with 'cosmos-sdk' topic 
 and only public repositories can be crawled. In the future, the idea is to engage the 
 community to add Cosmos topics to their Github public repositories in order to allow 
 the tool to discover their repositories. 
+
+*NOTE:* Because this used unauthenticated API calls to Github, there's a [rate limit](https://developer.github.com/v3/search/#rate-limit) of 10 requests per minutes so running this tool many times per minute might give you error messages.
 
 ## Installation
 
@@ -21,10 +23,14 @@ $ go get github.com/andynog/cosmocope
 
 Run this command from a terminal shell:
 
-    ```$ cosmocope discover projects```
+```shell
+$ cosmocope discover projects
+```
 
 ### JSON output
 
 If you need a JSON output instead of a printed table, use the `--json` or `-j` flag
 
-    ```$ cosmocope discover projects --json```
+```shell
+$ cosmocope discover projects --json
+```
