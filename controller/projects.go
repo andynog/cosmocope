@@ -52,7 +52,7 @@ func PrintProjectsTable(projects []model.Project) {
 			{Align: simpletable.AlignCenter, Text: "UPDATED"},
 		},
 	}
-	countCosmosProjects := 0
+	count := 0
 
 	for _, p := range projects {
 		var description string
@@ -72,15 +72,15 @@ func PrintProjectsTable(projects []model.Project) {
 			{Text: humanize.Time(p.LastUpdated)},
 		}
 		table.Body.Cells = append(table.Body.Cells, row)
-		countCosmosProjects++
+		count++
 	}
 	fmt.Println("\r")
 
 	// Table Footer
 	table.Footer = &simpletable.Footer{
 		Cells: []*simpletable.Cell{
-			{Align: simpletable.AlignRight, Text: "Total Projects"},
-			{Align: simpletable.AlignLeft, Span: len(table.Header.Cells) - 1, Text: fmt.Sprintf("%d", countCosmosProjects)},
+			{Align: simpletable.AlignRight, Text: "Total:"},
+			{Align: simpletable.AlignLeft, Span: len(table.Header.Cells) - 1, Text: fmt.Sprintf("%d", count)},
 		},
 	}
 

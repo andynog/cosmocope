@@ -2,6 +2,7 @@ package client
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -52,4 +53,38 @@ func SearchGithub(topic string) GithubSearchResult {
 		log.Println(err)
 	}
 	return searchRslt
+}
+
+
+// Function that calls the Github API to retrieve contents
+// (files and folders) information from a Github repo that
+// contains a folder named 'x' where modules are stored.
+func GetContentFromGithub(owner string, repo string) (result GithubContentResult, err error) {
+	url := "https://api.github.com/repos/" + owner + "/" + repo + "/contents/x?ref=master"
+	method := "GET"
+
+	client := &http.Client {}
+	req, err := http.NewRequest(method, url, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	res, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer res.Body.Close()
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return nil, err
+	}
+	if res.StatusCode == http.StatusNotFound {
+		return nil, errors.New("no modules found")
+	}
+	var contentResult GithubContentResult
+	err = json.Unmarshal(body, &contentResult)
+	if err != nil {
+		return nil, err
+	}
+	return contentResult, nil
 }

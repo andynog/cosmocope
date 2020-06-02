@@ -35,7 +35,8 @@ repositories can be crawled.`,
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
-	rootCmd.SetVersionTemplate(`{{.Use}} - version: {{.Version}}
+	rootCmd.SetVersionTemplate(`
+{{.Use}} - version: {{.Version}}
 `)
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
@@ -55,7 +56,7 @@ func init() {
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
-	rootCmd.Flags().BoolVarP(&version, "version", "v", false, "Displays current tool version")
+	//rootCmd.Flags().BoolVarP(&version, "version", "v", false, "Displays current tool version")
 }
 
 // initConfig reads in config file and ENV variables if set.

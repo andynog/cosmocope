@@ -1,6 +1,9 @@
 package model
 
-// Cosmos Module
+// A Cosmos SDK Module
 type Module struct {
-	Name        string    `json:"name"`
+	Name  string `json:"name"`
+	Owner string `json:"owner"`
+	Repo  string `json:"repo"`
+	Url   string `json:"url"`
 }
