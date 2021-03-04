@@ -9,6 +9,7 @@ import (
 	"github.com/schollz/progressbar/v3"
 )
 
+
 func FindModulesInProjects(projects []model.Project) []model.Module {
 	var modules []model.Module
 	// Progress Bar

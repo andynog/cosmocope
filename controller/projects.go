@@ -23,9 +23,10 @@ func GetProjects() []model.Project {
 			Url:         r.HTMLURL,
 			Description: r.Description,
 			Language:    r.Language,
+			License:     r.License.Key,
 			Stars:       r.StargazersCount,
 			Forks:       r.ForksCount,
-			LastUpdated: r.UpdatedAt,
+			LastCommit: r.PushedAt,
 		}
 
 		// Logic to remove Azure CosmosDB listings
@@ -47,9 +48,10 @@ func PrintProjectsTable(projects []model.Project) {
 			{Align: simpletable.AlignCenter, Text: "URL"},
 			{Align: simpletable.AlignCenter, Text: "DESCRIPTION"},
 			{Align: simpletable.AlignCenter, Text: "LANGUAGE"},
+			{Align: simpletable.AlignCenter, Text: "LICENSE"},
 			{Align: simpletable.AlignCenter, Text: "STARS"},
 			{Align: simpletable.AlignCenter, Text: "FORKS"},
-			{Align: simpletable.AlignCenter, Text: "UPDATED"},
+			{Align: simpletable.AlignCenter, Text: "LAST COMMIT"},
 		},
 	}
 	count := 0
@@ -67,9 +69,10 @@ func PrintProjectsTable(projects []model.Project) {
 			{Text: p.Url},
 			{Text: strings.ToValidUTF8(description, "")},
 			{Text: p.Language},
+			{Text: p.License},
 			{Align: simpletable.AlignCenter, Text: fmt.Sprintf("%d", p.Stars)},
 			{Align: simpletable.AlignCenter, Text: fmt.Sprintf("%d", p.Forks)},
-			{Text: humanize.Time(p.LastUpdated)},
+			{Text: humanize.Time(p.LastCommit)},
 		}
 		table.Body.Cells = append(table.Body.Cells, row)
 		count++

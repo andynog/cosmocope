@@ -9,8 +9,9 @@ type Project struct {
 	Url         string    `json:"url"`
 	Description string    `json:"description"`
 	Language    string    `json:"language"`
+	License     string    `json:"license"`
 	Stars       int       `json:"stars"`
 	Forks       int       `json:"forks"`
-	LastUpdated time.Time `json:"updated"`
+	LastCommit  time.Time `json:"lastcommit"`
 	Modules     []Module  `json:"modules,omitempty"`
 }
