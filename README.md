@@ -16,6 +16,7 @@ To download and install this tool, please ensure
 
 ```shell
 $ go get github.com/andynog/cosmocope
+$ go install github.com/andynog/cosmocope
 ```
 
 ## Common commands
