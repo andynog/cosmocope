@@ -2,6 +2,7 @@ package controller
 
 import (
 	"fmt"
+	"sort"
 	"strings"
 
 	"cosmocope/client"
@@ -10,6 +11,13 @@ import (
 	"github.com/alexeyco/simpletable"
 	"github.com/dustin/go-humanize"
 )
+
+/// Logic to sort by Last Commit
+type ByLastCommit []model.Project
+
+func (a ByLastCommit) Len() int           { return len(a) }
+func (a ByLastCommit) Less(i, j int) bool { return a[i].LastCommit.UnixNano() < a[j].LastCommit.UnixNano() }
+func (a ByLastCommit) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 
 func GetProjects() []model.Project {
 	topic := "cosmos-sdk"
@@ -34,6 +42,7 @@ func GetProjects() []model.Project {
 			projects = append(projects, project)
 		}
 	}
+	sort.Sort(sort.Reverse(ByLastCommit(projects)))
 	return projects
 }
 
