@@ -3,20 +3,20 @@ libraries and modules that are part of the [Cosmos](https://cosmos.network) Ecos
 
 Currently, the only source crawled by the tool is [Github](https://github.com). 
 It leverages [Github's search API](https://developer.github.com/v3/search) to discover projects 
-tagged with 'cosmos-sdk' topic and only public repositories can be crawled. In the future, the idea 
-is to engage the community to add Cosmos topics to their Github public repositories in order to allow 
-the tool to discover their repositories. 
+tagged with `cosmos-sdk` topic and only public repositories can be crawled. In the future, the idea 
+is to engage the community to add Cosmos topics (tags) to their Github public repositories in order to allow 
+the tool to discover these repositories as part of the Cosmos Ecosystem 
 
-**NOTE:** Because this tool uses unauthenticated API calls to Github, there's a [rate limit](https://developer.github.com/v3/search/#rate-limit) of 10 requests per minutes so running this tool many times per minute might give you error messages.
+**NOTE:** Because this tool uses unauthenticated API calls to Github, there's a [rate limit](https://developer.github.com/v3/search/#rate-limit) of __10 requests__ per minutes so running this tool many times per minute might give you error messages.
 
 ## Installation
 
 To download and install this tool, please ensure
-[Go v1.14 or later is installed](https://golang.org/dl/), then run the following command from a terminal shell:
+[Go v1.15 or later is installed](https://golang.org/dl/), then run the following command from a terminal shell:
 
 ```shell
-$ go get github.com/andynog/cosmocope
-$ go install github.com/andynog/cosmocope
+$ go get github.com/cosmocope/cosmocope
+$ go install github.com/cosmocope/cosmocope
 ```
 
 ## Common commands
@@ -28,6 +28,7 @@ Run this command from a terminal shell:
 ```shell
 $ cosmocope discover projects
 ```
+
 
 #### JSON output
 
