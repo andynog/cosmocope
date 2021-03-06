@@ -3,7 +3,7 @@
 - [Why my Cosmos project is not showing on the results?](#why-my-cosmos-project-is-not-showing-on-the-results)
 - [Are these projects displayed official Cosmos SDK projects?](#are-these-projects-displayed-official-cosmos-sdk-projects)
 - [Why only one topic is used to discover projects?](#why-only-one-topic-is-used-to-discover-projects)
-- [Why I am getting a rate limit error when running a command?](#why-i-am-getting-a-rate-limit-error-when-running-a-commandd)
+- [Why I am getting a rate limit error when running a command?](#why-i-am-getting-a-rate-limit-error-when-running-a-command)
 
 ## Why my Cosmos project is not showing on the results?
 
@@ -27,7 +27,7 @@ For an official list of modules, please check [Atlas](https://atlas.cosmos.netwo
 
 The `cosmos-sdk` topic is the best way to "discover"  Cosmos Ecosystem projects. The reason at this time to only support this topic is because of the desire that users who will be using this tool are interested in the Cosmos Ecosystem projects and want to find more about activity among the projects (e.g. last updated) or popularity (number of stars) for example.
 
-## Why I am getting a rate limit error when running a command
+## Why I am getting a rate limit error when running a command?
 
 The tools leverage the unauthenticated calls to the Github API. Github has some limits on how many times their API can be called with authentication (e.g. an API key). For security reasons, this might be the best approach this time since it requires less configuration and doesn't have major security implications. The information returned by the API could be also discovered through the Github website search functionality.
 
