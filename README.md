@@ -1,5 +1,4 @@
-**cosmocope** (**cosmo**s + teles**cope**) is a tool that helps you discover projects, tools, SDKs, 
-libraries and modules that are part of the [Cosmos](https://cosmos.network) Ecosystem
+**cosmocope** (**cosmo**s + teles**cope**) is a tool that helps you discover projects, tools, libraries and modules that are part of the [Cosmos](https://cosmos.network) Ecosystem
 
 Currently, the only source crawled by the tool is [Github](https://github.com). 
 It leverages [Github's search API](https://developer.github.com/v3/search) to discover projects 
