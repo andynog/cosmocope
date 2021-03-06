@@ -27,7 +27,7 @@ This command will use the Github search API to fetch repositories that have the 
 
 **NOTE:** The list of projects returned is not a "curated" or "official" list of Cosmos projects. Anyone can tag their repository with the `cosmos-sdk` topic. The intention is to use this tool for "discoverability" only. For an official list of Cosmos SDK projects please check the official [Cosmos Network Ecosystem](https://cosmos.network/ecosystem) website.
 
-```shell
+```
 $ cosmocope discover projects --help
 
 This command searches for projects on Github that are tagged with the 'cosmos-sdk' topic
@@ -42,7 +42,7 @@ Flags:
 ```
 Run this command from a terminal shell:
 
-```shell
+```
 $ cosmocope discover projects
 ```
 
@@ -51,7 +51,7 @@ $ cosmocope discover projects
 
 If you need a JSON output instead of a printed table, use the `--json` or `-j` flag
 
-```shell
+```
 $ cosmocope discover projects --json
 ```
 
@@ -63,7 +63,7 @@ This command usually takes under 30 seconds to return the results.
 
 **NOTE:** This command doesn't guarantee that the folders shown are actually Cosmos SDK modules. The intention is to use this tool for "discoverability" only. For an official list of modules, please check [Atlas](https://atlas.cosmos.network) which is the official Cosmos SDK module registry.
 
-```shell
+```
 $ cosmocope discover projects --help
 
 This command searches for projects on Github that are tagged with the 'cosmos-sdk' topic
@@ -76,9 +76,10 @@ Flags:
   -j, --json   Output results to JSON
 
 ```
+
 Run this command from a terminal shell:
 
-```shell
+```
 $ cosmocope discover modules
 ```
 
@@ -86,7 +87,7 @@ $ cosmocope discover modules
 
 If you need a JSON output instead of a printed table, use the `--json` or `-j` flag
 
-```shell
+```
 $ cosmocope discover modules --json
 ```
 
