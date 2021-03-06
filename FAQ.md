@@ -3,13 +3,13 @@
 - [Why my Cosmos project is not showing on the results?](#why-my-cosmos-project-is-not-showing-on-the-results)
 - [Are these projects displayed official Cosmos SDK projects?](#are-these-projects-displayed-official-cosmos-sdk-projects)
 - [Why only one topic is used to discover projects?](#why-only-one-topic-is-used-to-discover-projects)
-- [Why I am getting a rate limit error when running a command?](why-i-am-getting-a-rate-limit-error-when-running-a-commandd)
+- [Why I am getting a rate limit error when running a command?](#why-i-am-getting-a-rate-limit-error-when-running-a-commandd)
 
 ## Why my Cosmos project is not showing on the results?
 
 Currently the `cosmocope` tool only retrieves Github repositories that have a topic named `cosmos-sdk` associated with it. Please add the topic and run the tool again. It should show up on the next time you run `cosmocope discover projects`. 
 
-## Are these projects displayed official Cosmos SDK chain projects?
+## Are these projects displayed official Cosmos SDK projects?
 
 The projects returned are not part of a curated list of Cosmos projects. If someone creates a project that is not based in the `cosmos-sdk` and decides to tag them with a `cosmos-sdk` project there is nothing to prevent that since this is a Github feature available to anyone who has access to Github. 
 
