@@ -8,7 +8,7 @@ tagged with `cosmos-sdk` topic and only public repositories can be crawled.
 In the future, the idea is to engage the community to add Cosmos topics (tags) to their Github public repositories in order to allow 
 the tool to discover these repositories as part of the Cosmos Ecosystem.
 
-**NOTE:** Because this tool uses unauthenticated API calls to Github, there's a [rate limit](https://developer.github.com/v3/search/#rate-limit) of __10 requests__ per minutes so running this tool many times per minute might give you error messages.
+**NOTE:** Because this tool uses unauthenticated API calls to Github, there's a [rate limit](https://developer.github.com/v3/search/#rate-limit) so running this tool many times per minute might give you error messages. The rate limit error message gives you a wait time (in minutes) that you have to wait to run it again successfully.
 
 ## Installation
 
@@ -93,5 +93,10 @@ $ cosmocope discover modules --json
 
 ### FAQ
 
+For some Frequently Asked Questions please visit the [FAQ](FAQ.md) page.
 
 ### Disclaimer
+
+The information provided by this tool is directly retrieved from Github using its Search API. The tool does not have any control on the content returned by Github. The tool only displays the results in a nice format (table format or Json).
+
+Please exercise due diligence in assessing the results returned.
