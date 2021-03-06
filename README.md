@@ -24,9 +24,10 @@ $ go install github.com/cosmocope/cosmocope
 
 ### Discovering projects
 
-This command will use the Github search API to fetch repositories that have the `cosmos-sdk` topic. 
+This command will use the Github search API to fetch repositories that have the `cosmos-sdk` topic. The results will be sorted by the last updated date (commit), the most recent will show on top.
 
 **NOTE:** The list of projects returned is not a "curated" or "official" list of Cosmos projects. Anyone can tag their repository with the `cosmos-sdk` topic. The intention is to use this tool for "discoverability" only. For an official list of Cosmos SDK projects please check the official [Cosmos Network Ecosystem](https://cosmos.network/ecosystem) website.
+
 ```shell
 $ cosmocope discover projects --help
 

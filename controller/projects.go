@@ -19,11 +19,13 @@ func (a ByLastCommit) Len() int           { return len(a) }
 func (a ByLastCommit) Less(i, j int) bool { return a[i].LastCommit.UnixNano() < a[j].LastCommit.UnixNano() }
 func (a ByLastCommit) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 
-func GetProjects() []model.Project {
+func GetProjects() (result []model.Project, err error) {
 	topic := "cosmos-sdk"
 	var projects []model.Project
-	var searchResults client.GithubSearchResult
-	searchResults = client.SearchGithub(topic)
+	searchResults, err := client.SearchGithub(topic)
+	if err != nil {
+		return nil, fmt.Errorf("problems fetching projects")
+	}
 	for _, r := range searchResults.Items {
 		project := model.Project{
 			Name:        r.Name,
@@ -43,7 +45,7 @@ func GetProjects() []model.Project {
 		}
 	}
 	sort.Sort(sort.Reverse(ByLastCommit(projects)))
-	return projects
+	return projects, nil
 }
 
 // Print Projects in Table format
@@ -55,7 +57,7 @@ func PrintProjectsTable(projects []model.Project) {
 			{Align: simpletable.AlignCenter, Text: "OWNER"},
 			{Align: simpletable.AlignCenter, Text: "NAME"},
 			{Align: simpletable.AlignCenter, Text: "URL"},
-			{Align: simpletable.AlignCenter, Text: "DESCRIPTION"},
+			//{Align: simpletable.AlignCenter, Text: "DESCRIPTION"},
 			{Align: simpletable.AlignCenter, Text: "LANGUAGE"},
 			{Align: simpletable.AlignCenter, Text: "LICENSE"},
 			{Align: simpletable.AlignCenter, Text: "STARS"},
@@ -65,17 +67,17 @@ func PrintProjectsTable(projects []model.Project) {
 	count := 0
 
 	for _, p := range projects {
-		var description string
-		if len(p.Description) > 28 {
-			description = p.Description[0:26] + "..."
-		} else {
-			description = p.Description
-		}
+		//var description string
+		//if len(p.Description) > 28 {
+		//	description = p.Description[0:26] + "..."
+		//} else {
+		//	description = p.Description
+		//}
 		row := []*simpletable.Cell{
 			{Text: p.Owner},
 			{Text: p.Name},
 			{Text: p.Url},
-			{Text: strings.ToValidUTF8(description, "")},
+			//{Text: strings.ToValidUTF8(description, "")},
 			{Text: p.Language},
 			{Text: p.License},
 			{Align: simpletable.AlignCenter, Text: fmt.Sprintf("%d", p.Stars)},

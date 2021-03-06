@@ -6,4 +6,5 @@ type Module struct {
 	Owner string `json:"owner"`
 	Repo  string `json:"repo"`
 	Url   string `json:"url"`
+	Sha  string `json:"sha"`
 }

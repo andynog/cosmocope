@@ -17,7 +17,9 @@ package cmd
 
 import (
 	"cosmocope/controller"
+	"fmt"
 	"github.com/spf13/cobra"
+	"os"
 )
 
 // modulesCmd represents the modules command
@@ -29,8 +31,20 @@ This command searches for projects on Github that are tagged
 with the 'cosmos-sdk' topic and the tool crawls each repository 
 looking for a folder named 'x' in the repository.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		projects := controller.GetProjects()
-		modules := controller.FindModulesInProjects(projects)
+		// Fetch projects
+		projects, err := controller.GetProjects()
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+
+		// Fetch modules for projects
+		modules, err := controller.FindModulesInProjects(projects)
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+
 		if jsonOutput {
 			controller.PrintModulesJSON(modules)
 		} else {

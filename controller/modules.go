@@ -10,7 +10,7 @@ import (
 )
 
 
-func FindModulesInProjects(projects []model.Project) []model.Module {
+func FindModulesInProjects(projects []model.Project) (result []model.Module, err error) {
 	var modules []model.Module
 	// Progress Bar
 	bar := progressbar.NewOptions(len(projects),
@@ -18,7 +18,7 @@ func FindModulesInProjects(projects []model.Project) []model.Module {
 		progressbar.OptionEnableColorCodes(true),
 		progressbar.OptionShowBytes(false),
 		progressbar.OptionSetWidth(15),
-		progressbar.OptionSetDescription("[cyan] Crawling Github Cosmos repositories. Looking for modules...:"),
+		progressbar.OptionSetDescription("[cyan] Crawling Github repositories. Looking for Cosmos modules...:"),
 		progressbar.OptionSetTheme(progressbar.Theme{
 			Saucer:        "[green]=",
 			SaucerHead:    "[green]>",
@@ -30,7 +30,10 @@ func FindModulesInProjects(projects []model.Project) []model.Module {
 		bar.Add(1)
 		hasModulesFolder := client.LookForModules(p.Url)
 		if hasModulesFolder {
-			result, _ := client.GetContentFromGithub(p.Owner, p.Name)
+			result, err := client.GetContentFromGithub(p.Owner, p.Name)
+			if err != nil {
+				return nil, fmt.Errorf("error fetching modules: %s", err)
+			}
 			if result != nil {
 				for _, m := range result {
 					if m.Type == "dir" {
@@ -42,7 +45,7 @@ func FindModulesInProjects(projects []model.Project) []model.Module {
 		}
 	}
 	bar.Finish()
-	return modules
+	return modules, nil
 }
 
 // Print Modules in Table format
@@ -52,8 +55,7 @@ func PrintModulesTable(modules []model.Module) {
 	table.Header = &simpletable.Header{
 		Cells: []*simpletable.Cell{
 			{Align: simpletable.AlignCenter, Text: "MODULE"},
-			{Align: simpletable.AlignCenter, Text: "OWNER"},
-			{Align: simpletable.AlignCenter, Text: "REPO"},
+			{Align: simpletable.AlignCenter, Text: "REPOSITORY"},
 			{Align: simpletable.AlignCenter, Text: "URL"},
 		},
 	}
@@ -62,8 +64,7 @@ func PrintModulesTable(modules []model.Module) {
 	for _, m := range modules {
 		row := []*simpletable.Cell{
 			{Text: m.Name},
-			{Text: m.Owner},
-			{Text: m.Repo},
+			{Text: m.Owner + "/" + m.Repo},
 			{Text: m.Url},
 		}
 		table.Body.Cells = append(table.Body.Cells, row)

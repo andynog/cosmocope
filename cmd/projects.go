@@ -2,7 +2,9 @@ package cmd
 
 import (
 	"cosmocope/controller"
+	"fmt"
 	"github.com/spf13/cobra"
+	"os"
 )
 
 var jsonOutput bool
@@ -14,7 +16,11 @@ var projectsCmd = &cobra.Command{
 	Long:  `
 This command searches for projects on Github that are tagged with the 'cosmos-sdk' topic`,
 	Run: func(cmd *cobra.Command, args []string) {
-		projects := controller.GetProjects()
+		projects, err := controller.GetProjects()
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
 		if jsonOutput {
 			controller.PrintProjectsJSON(projects)
 		} else {

@@ -2,12 +2,29 @@ package client
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
+	"github.com/hako/durafmt"
+	_ "github.com/hako/durafmt"
 	"io/ioutil"
-	"log"
 	"net/http"
+	"os"
+	"strconv"
+	"time"
 )
+
+type RateLimitError struct {
+	Remaining int64
+}
+
+func (e *RateLimitError) Error() string {
+	if e.Remaining == 0 {
+		return fmt.Sprintf("rate limit reached, please try again later")
+	} else {
+		//reset := fmt.Sprintf("%s", time.Unix(e.Remaining, 0))
+		diff := time.Unix(e.Remaining, 0).Sub(time.Now())
+		return fmt.Sprintf("rate limit reached, please try again in %s", durafmt.Parse(diff).LimitFirstN(2))
+	}
+}
 
 // Function to check if a git repository contains a folder named 'x'
 // which indicates it is a Cosmos SDK project
@@ -33,7 +50,8 @@ func LookForModules(repo string) bool {
 // that contain the topic 'cosmos-sdk'. This assumes that owners of
 // Cosmos SDK project add the 'cosmos-sdk' to their projects for better
 // discovery
-func SearchGithub(topic string) GithubSearchResult {
+func SearchGithub(topic string) (result GithubSearchResult, err error) {
+	var searchRslt GithubSearchResult
 	url := "https://api.github.com/search/repositories?q=topic:" + topic + "&page=1&per_page=1000&sort:updated"
 	method := "GET"
 
@@ -45,14 +63,31 @@ func SearchGithub(topic string) GithubSearchResult {
 		fmt.Println(err)
 	}
 	res, err := client.Do(req)
+
+	// Check if rate limit reached
+	if (err != nil) || (res.StatusCode != 200)  {
+		val, ok := res.Header["X-Ratelimit-Remaining"]
+		if ok && (val[0] == "0") {
+			val, ok := res.Header["X-Ratelimit-Reset"]
+			if ok {
+				remaining, err := strconv.Atoi(val[0])
+				if err != nil {
+					return searchRslt, &RateLimitError{	Remaining: 0 }
+				} else {
+					return searchRslt, &RateLimitError{	Remaining: int64(remaining) }
+				}
+			}
+		}
+	}
+
 	defer res.Body.Close()
 	body, err := ioutil.ReadAll(res.Body)
-	var searchRslt GithubSearchResult
 	err = json.Unmarshal(body, &searchRslt)
 	if err != nil {
-		log.Println(err)
+		return searchRslt, err
+	} else {
+		return searchRslt, nil
 	}
-	return searchRslt
 }
 
 
@@ -60,6 +95,8 @@ func SearchGithub(topic string) GithubSearchResult {
 // (files and folders) information from a Github repo that
 // contains a folder named 'x' where modules are stored.
 func GetContentFromGithub(owner string, repo string) (result GithubContentResult, err error) {
+	var contentResult GithubContentResult
+
 	url := "https://api.github.com/repos/" + owner + "/" + repo + "/contents/x?ref=master"
 	method := "GET"
 
@@ -70,18 +107,35 @@ func GetContentFromGithub(owner string, repo string) (result GithubContentResult
 	}
 
 	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
+
+	// Check if rate limit reached
+	if (err != nil) || (res.StatusCode != 200)  {
+		val, ok := res.Header["X-Ratelimit-Remaining"]
+		if ok && (val[0] == "0") {
+			val, ok := res.Header["X-Ratelimit-Reset"]
+			if ok {
+				remaining, err := strconv.Atoi(val[0])
+				if err != nil {
+					err = &RateLimitError{ Remaining: 0 }
+					fmt.Println("\r\n", err)
+					os.Exit(1)
+				} else {
+					err = &RateLimitError{ Remaining: int64(remaining) }
+					fmt.Println("\r\n", err)
+					os.Exit(1)
+				}
+			}
+		}
 	}
+
 	defer res.Body.Close()
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		return nil, err
 	}
 	if res.StatusCode == http.StatusNotFound {
-		return nil, errors.New("no modules found")
+		return contentResult, nil
 	}
-	var contentResult GithubContentResult
 	err = json.Unmarshal(body, &contentResult)
 	if err != nil {
 		return nil, err
