@@ -34,7 +34,7 @@ func FindModulesInProjects(projects []model.Project) []model.Module {
 			if result != nil {
 				for _, m := range result {
 					if m.Type == "dir" {
-						module := model.Module{Name: m.Name, Owner: p.Owner, Repo: p.Name, Url: m.Links.Self}
+						module := model.Module{Name: m.Name, Owner: p.Owner, Repo: p.Name, Url: m.HTMLURL}
 						modules = append(modules, module)
 					}
 				}
