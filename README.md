@@ -19,6 +19,35 @@ $ go get github.com/cosmocope/cosmocope
 $ go install github.com/cosmocope/cosmocope
 ```
 
+## Help and Usage 
+
+To find more information about the tool help and usage run the following command:
+
+```
+cosmoscope --help
+```
+
+A help message will be displayed:
+
+```
+This tool allows you to crawl Github in order to discover 
+Cosmos (cosmos.network) related projects. Currently, the 
+only source crawled by the tool is Github. It leverages 
+Github's search API to discover projects and only public 
+repositories can be crawled.
+
+Usage:
+  cosmocope [command]
+
+Available Commands:
+  discover    Find projects, tools, libraries and modules for the Cosmos ecosystem
+  help        Help about any command
+
+Flags:
+  -h, --help      help for cosmocope
+  -v, --version   version for cosmocope
+```
+
 ## Discover commands
 
 ### Discovering projects
