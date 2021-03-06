@@ -31,7 +31,7 @@ func GetProjects() []model.Project {
 			Url:         r.HTMLURL,
 			Description: r.Description,
 			Language:    r.Language,
-			License:     r.License.Key,
+			License:     r.License.SpdxID,
 			Stars:       r.StargazersCount,
 			Forks:       r.ForksCount,
 			LastCommit: r.PushedAt,
@@ -52,14 +52,13 @@ func PrintProjectsTable(projects []model.Project) {
 
 	table.Header = &simpletable.Header{
 		Cells: []*simpletable.Cell{
-			{Align: simpletable.AlignCenter, Text: "NAME"},
 			{Align: simpletable.AlignCenter, Text: "OWNER"},
+			{Align: simpletable.AlignCenter, Text: "NAME"},
 			{Align: simpletable.AlignCenter, Text: "URL"},
 			{Align: simpletable.AlignCenter, Text: "DESCRIPTION"},
 			{Align: simpletable.AlignCenter, Text: "LANGUAGE"},
 			{Align: simpletable.AlignCenter, Text: "LICENSE"},
 			{Align: simpletable.AlignCenter, Text: "STARS"},
-			{Align: simpletable.AlignCenter, Text: "FORKS"},
 			{Align: simpletable.AlignCenter, Text: "LAST COMMIT"},
 		},
 	}
@@ -67,20 +66,19 @@ func PrintProjectsTable(projects []model.Project) {
 
 	for _, p := range projects {
 		var description string
-		if len(p.Description) > 44 {
-			description = p.Description[0:42] + "..."
+		if len(p.Description) > 28 {
+			description = p.Description[0:26] + "..."
 		} else {
 			description = p.Description
 		}
 		row := []*simpletable.Cell{
-			{Text: p.Name},
 			{Text: p.Owner},
+			{Text: p.Name},
 			{Text: p.Url},
 			{Text: strings.ToValidUTF8(description, "")},
 			{Text: p.Language},
 			{Text: p.License},
 			{Align: simpletable.AlignCenter, Text: fmt.Sprintf("%d", p.Stars)},
-			{Align: simpletable.AlignCenter, Text: fmt.Sprintf("%d", p.Forks)},
 			{Text: humanize.Time(p.LastCommit)},
 		}
 		table.Body.Cells = append(table.Body.Cells, row)
