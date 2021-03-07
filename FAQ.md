@@ -28,7 +28,7 @@ For an official list of Cosmos SDK projects, please check the official [Cosmos N
 
 For an official list of modules, please check [Atlas](https://atlas.cosmos.network), the official Cosmos SDK module registry.
 
-## Why use only one topic is to discover projects?
+## Why use only one topic to discover projects?
 
 The `cosmos-sdk` topic is the best way to "discover"  Cosmos Ecosystem projects. The reason at this time to only support this topic is because of the desire that users who will be using this tool are interested in the Cosmos Ecosystem projects and want to find more about activity among the projects (e.g., last updated) or popularity (number of stars) for example.
 
