@@ -6,9 +6,6 @@ import (
 	"os"
 )
 
-//var cfgFile string
-var version bool
-
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "cosmocope",

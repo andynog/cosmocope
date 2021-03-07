@@ -27,14 +27,14 @@ func FindModulesInProjects(projects []model.Project) (result []model.Module, err
 			BarEnd:        "]",
 		}))
 	for _, p := range projects {
-		bar.Add(1)
+		_ = bar.Add(1)
 		hasModulesFolder := client.LookForModules(p.Url)
 		if hasModulesFolder {
 			result, err := client.GetContentFromGithub(p.Owner, p.Name)
 			if err != nil {
 				return nil, fmt.Errorf("error fetching modules: %s", err)
 			}
-			if result != nil {
+			if len(result) > 0 {
 				for _, m := range result {
 					if m.Type == "dir" {
 						module := model.Module{Name: m.Name, Owner: p.Owner, Repo: p.Name, Url: m.HTMLURL}
@@ -44,7 +44,7 @@ func FindModulesInProjects(projects []model.Project) (result []model.Module, err
 			}
 		}
 	}
-	bar.Finish()
+	_ = bar.Finish()
 	return modules, nil
 }
 

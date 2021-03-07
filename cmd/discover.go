@@ -14,7 +14,7 @@ var discoverCmd = &cobra.Command{
 Find projects, tools, libraries and modules for the Cosmos ecosystem.
 Currently the only commands implemented are 'projects' and 'modules'.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		cmd.Help()
+		_ = cmd.Help()
 		os.Exit(1)
 	},
 }

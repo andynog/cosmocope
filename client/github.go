@@ -18,11 +18,12 @@ type RateLimitError struct {
 
 func (e *RateLimitError) Error() string {
 	if e.Remaining == 0 {
-		return fmt.Sprintf("rate limit reached, please try again later")
+		return "rate limit reached, please try again later..."
 	} else {
 		//reset := fmt.Sprintf("%s", time.Unix(e.Remaining, 0))
-		diff := time.Unix(e.Remaining, 0).Sub(time.Now())
-		return fmt.Sprintf("rate limit reached, please try again in %s", durafmt.Parse(diff).LimitFirstN(2))
+		remainingTime := time.Unix(e.Remaining, 0)
+		until := time.Until(remainingTime)
+		return fmt.Sprintf("rate limit reached, please try again in %s", durafmt.Parse(until).LimitFirstN(2))
 	}
 }
 
@@ -39,11 +40,8 @@ func LookForModules(repo string) bool {
 		fmt.Println(err)
 	}
 
-	res, err := client.Do(req)
-	if res.StatusCode == http.StatusOK {
-		return true
-	}
-	return false
+	res, _ := client.Do(req)
+	return res.StatusCode == http.StatusOK
 }
 
 // Function that calls the Github Search API and look for projects
