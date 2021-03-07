@@ -75,16 +75,7 @@ Flags:
 Run this command from a terminal shell:
 
 ```
-$ cosmocope discover projects
-```
-
-
-#### JSON output
-
-If you need a JSON output instead of a printed table, use the `--json` or `-j` flag
-
-```
-$ cosmocope discover projects --json
+cosmocope discover projects
 ```
 
 ### Discovering modules
@@ -112,16 +103,24 @@ Flags:
 Run this command from a terminal shell:
 
 ```
-$ cosmocope discover modules
+cosmocope discover modules
 ```
 
-#### JSON output
+### JSON output
 
-If you need a JSON output instead of a printed table, use the `--json` or `-j` flag
+If you need a JSON output instead of a printed table, use the `--json` or `-j` flag. The JSON output also might include additional data (e.g. description and forks) that is not shown in the default output (table)
 
-```
-$ cosmocope discover modules --json
-```
+* Projects
+  
+    ```
+    cosmocope discover projects --json
+    ```
+
+* Modules
+  
+    ```
+   cosmocope discover modules --json
+   ```
 
 ### FAQ
 
