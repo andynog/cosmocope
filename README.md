@@ -1,3 +1,7 @@
+# cosmocope
+
+[![Go](https://github.com/cosmocope/cosmocope/actions/workflows/go.yml/badge.svg?branch=master)](https://github.com/cosmocope/cosmocope/actions/workflows/go.yml)
+
 **cosmocope** (**cosmo**s + teles**cope**) is a tool that helps you discover projects, tools, libraries and modules that are part of the [Cosmos](https://cosmos.network) Ecosystem
 
 Currently, the only source crawled by the tool is [Github](https://github.com). 
@@ -14,9 +18,8 @@ the tool to discover these repositories as part of the Cosmos Ecosystem.
 To download and install this tool, please ensure
 [Go v1.16 or later is installed](https://golang.org/dl/), then run the following command from a terminal shell:
 
-```shell
-$ go get github.com/cosmocope/cosmocope
-$ go install github.com/cosmocope/cosmocope
+```
+go get github.com/cosmocope/cosmocope
 ```
 
 ## Help and Usage 
