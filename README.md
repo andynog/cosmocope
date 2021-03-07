@@ -82,7 +82,7 @@ cosmocope discover projects
 
 This command will fetch all the projects as the command above and will search for a folder name `x` in the repository. This is an indication that this project is based on the `cosmos-sdk` and the `x` folder contains modules. 
 
-This command usually takes under 30 seconds to return the results.
+This command usually takes under 30 seconds to return the results. This command executes a lot of Github API call in order to retrieve information about the modules folders. You might be able to run it a couple of times each hour before reaching the rate limit. If you reach the rate limit, the command will tell how long you have to wait to try it again.
 
 **NOTE:** This command doesn't guarantee that the folders shown are actually Cosmos SDK modules. The intention is to use this tool for "discoverability" only. For an official list of modules, please check [Atlas](https://atlas.cosmos.network) which is the official **Cosmos SDK module registry**.
 
