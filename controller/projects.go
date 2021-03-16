@@ -5,10 +5,10 @@ import (
 	"sort"
 	"strings"
 
-	"cosmocope/client"
-	"cosmocope/model"
 	"encoding/json"
 	"github.com/alexeyco/simpletable"
+	"github.com/andynog/cosmocope/client"
+	"github.com/andynog/cosmocope/model"
 	"github.com/dustin/go-humanize"
 )
 

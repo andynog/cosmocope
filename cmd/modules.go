@@ -16,8 +16,8 @@ limitations under the License.
 package cmd
 
 import (
-	"github.com/andynog/cosmocope/controller"
 	"fmt"
+	"github.com/andynog/cosmocope/controller"
 	"github.com/spf13/cobra"
 	"os"
 )

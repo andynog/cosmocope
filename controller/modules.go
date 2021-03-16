@@ -1,11 +1,11 @@
 package controller
 
 import (
-	"cosmocope/client"
-	"cosmocope/model"
 	"encoding/json"
 	"fmt"
 	"github.com/alexeyco/simpletable"
+	"github.com/andynog/cosmocope/client"
+	"github.com/andynog/cosmocope/model"
 	"github.com/schollz/progressbar/v3"
 )
 
