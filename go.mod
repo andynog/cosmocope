@@ -1,4 +1,4 @@
-module github.com/andynog/cosmocope
+module github.com/andynog/cosmocope/v2
 
 go 1.16
 

@@ -17,7 +17,7 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/andynog/cosmocope/controller"
+	"github.com/andynog/cosmocope/v2/controller"
 	"github.com/spf13/cobra"
 	"os"
 )

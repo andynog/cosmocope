@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/alexeyco/simpletable"
-	"github.com/andynog/cosmocope/client"
-	"github.com/andynog/cosmocope/model"
+	"github.com/andynog/cosmocope/v2/client"
+	"github.com/andynog/cosmocope/v2/model"
 	"github.com/schollz/progressbar/v3"
 )
 
