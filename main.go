@@ -1,7 +1,7 @@
 package main
 
 import (
-	"andynog.com/cosmocope/cmd"
+	"github.com/andynog/cosmocope/cmd"
 )
 
 func main() {
