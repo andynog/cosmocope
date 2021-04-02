@@ -8,10 +8,12 @@
 
 ### IMPROVEMENTS
 
+- Detect Cosmos chains based on go dependency ([#2])
 - Show number of forks in discover projects table view ([#4])
 
 ### BUG FIXES
 
+[#2]: https://github.com/andynog/cosmocope/issues/2
 [#4]: https://github.com/andynog/cosmocope/issues/4
 
 ## v0.0.1

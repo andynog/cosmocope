@@ -27,6 +27,12 @@ func GetProjects() (result []model.Project, err error) {
 		return nil, fmt.Errorf("problems fetching projects")
 	}
 	for _, r := range searchResults.Items {
+		var cosmosSdk string
+		// If it's a Golang project check if it uses the Cosmos SDK
+		if strings.ToLower(r.Language) == "go" {
+			cosmosSdk, err = client.IsCosmosSDK(r.Owner.Login, r.Name, r.DefaultBranch)
+		}
+
 		project := model.Project{
 			Name:        r.Name,
 			Owner:       r.Owner.Login,
@@ -36,7 +42,10 @@ func GetProjects() (result []model.Project, err error) {
 			License:     r.License.SpdxID,
 			Stars:       r.StargazersCount,
 			Forks:       r.ForksCount,
-			LastCommit: r.PushedAt,
+			LastCommit:  r.PushedAt,
+			Branch:      r.DefaultBranch,
+			CosmosSDK:   cosmosSdk,
+
 		}
 
 		// Logic to remove Azure CosmosDB listings
@@ -59,6 +68,7 @@ func PrintProjectsTable(projects []model.Project) {
 			{Align: simpletable.AlignCenter, Text: "URL"},
 			//{Align: simpletable.AlignCenter, Text: "DESCRIPTION"},
 			{Align: simpletable.AlignCenter, Text: "LANGUAGE"},
+			{Align: simpletable.AlignCenter, Text: "COSMOS SDK (BRANCH)"},
 			{Align: simpletable.AlignCenter, Text: "LICENSE"},
 			{Align: simpletable.AlignCenter, Text: "STARS"},
 			{Align: simpletable.AlignCenter, Text: "FORKS"},
@@ -74,12 +84,19 @@ func PrintProjectsTable(projects []model.Project) {
 		//} else {
 		//	description = p.Description
 		//}
+		var sdkBranch string
+		if len(p.CosmosSDK) > 0 {
+			sdkBranch = p.CosmosSDK + " (" + p.Branch + ")"
+		} else {
+			sdkBranch = ""
+		}
 		row := []*simpletable.Cell{
 			{Text: p.Owner},
 			{Text: p.Name},
 			{Text: p.Url},
 			//{Text: strings.ToValidUTF8(description, "")},
 			{Text: p.Language},
+			{Text: sdkBranch},
 			{Text: p.License},
 			{Align: simpletable.AlignCenter, Text: fmt.Sprintf("%d", p.Stars)},
 			{Align: simpletable.AlignCenter, Text: fmt.Sprintf("%d", p.Forks)},
