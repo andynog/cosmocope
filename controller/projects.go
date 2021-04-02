@@ -61,6 +61,7 @@ func PrintProjectsTable(projects []model.Project) {
 			{Align: simpletable.AlignCenter, Text: "LANGUAGE"},
 			{Align: simpletable.AlignCenter, Text: "LICENSE"},
 			{Align: simpletable.AlignCenter, Text: "STARS"},
+			{Align: simpletable.AlignCenter, Text: "FORKS"},
 			{Align: simpletable.AlignCenter, Text: "LAST COMMIT"},
 		},
 	}
@@ -81,6 +82,7 @@ func PrintProjectsTable(projects []model.Project) {
 			{Text: p.Language},
 			{Text: p.License},
 			{Align: simpletable.AlignCenter, Text: fmt.Sprintf("%d", p.Stars)},
+			{Align: simpletable.AlignCenter, Text: fmt.Sprintf("%d", p.Forks)},
 			{Text: humanize.Time(p.LastCommit)},
 		}
 		table.Body.Cells = append(table.Body.Cells, row)
@@ -91,7 +93,7 @@ func PrintProjectsTable(projects []model.Project) {
 	// Table Footer
 	table.Footer = &simpletable.Footer{
 		Cells: []*simpletable.Cell{
-			{Align: simpletable.AlignRight, Text: "Total:"},
+			{Align: simpletable.AlignRight, Text: "Total Repositories Found:"},
 			{Align: simpletable.AlignLeft, Span: len(table.Header.Cells) - 1, Text: fmt.Sprintf("%d", count)},
 		},
 	}
