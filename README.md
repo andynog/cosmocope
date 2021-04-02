@@ -87,17 +87,18 @@ This command usually takes under 30 seconds to return the results. This command 
 **NOTE:** This command doesn't guarantee that the folders shown are actually Cosmos SDK modules. The intention is to use this tool for "discoverability" only. For an official list of modules, please check [Atlas](https://atlas.cosmos.network) which is the official **Cosmos SDK module registry**.
 
 ```
-$ cosmocope discover projects --help
+$ cosmocope discover modules --help
 
-This command searches for projects on Github that are tagged with the 'cosmos-sdk' topic
+This command searches for projects on Github that are tagged 
+with the 'cosmos-sdk' topic and the tool crawls each repository 
+looking for a folder named 'x' in the repository.
 
 Usage:
-  cosmocope discover projects [flags]
+  cosmocope discover modules [flags]
 
 Flags:
-  -h, --help   help for projects
+  -h, --help   help for modules
   -j, --json   Output results to JSON
-
 ```
 
 Run this command from a terminal shell:
