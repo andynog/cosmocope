@@ -2,6 +2,7 @@ package controller
 
 import (
 	"fmt"
+	"github.com/schollz/progressbar/v3"
 	"sort"
 	"strings"
 
@@ -12,22 +13,31 @@ import (
 	"github.com/dustin/go-humanize"
 )
 
-/// Logic to sort by Last Commit
-type ByLastCommit []model.Project
-
-func (a ByLastCommit) Len() int           { return len(a) }
-func (a ByLastCommit) Less(i, j int) bool { return a[i].LastCommit.UnixNano() < a[j].LastCommit.UnixNano() }
-func (a ByLastCommit) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
-
-func GetProjects() (result []model.Project, err error) {
+func GetProjects(sortBy string) (result []model.Project, err error) {
 	topic := "cosmos-sdk"
 	var projects []model.Project
 	searchResults, err := client.SearchGithub(topic)
 	if err != nil {
 		return nil, fmt.Errorf("problems fetching projects")
 	}
+
+	// Progress bar
+	bar := progressbar.NewOptions(len(searchResults.Items),
+		progressbar.OptionEnableColorCodes(true),
+		progressbar.OptionShowBytes(false),
+		progressbar.OptionSetWidth(15),
+		progressbar.OptionSetDescription("[cyan] Crawling Github repositories. Looking for Cosmos projects...:"),
+		progressbar.OptionSetTheme(progressbar.Theme{
+			Saucer:        "[green]=",
+			SaucerHead:    "[green]>",
+			SaucerPadding: " ",
+			BarStart:      "[",
+			BarEnd:        "]",
+		}))
+
 	for _, r := range searchResults.Items {
-		var cosmosSdk string
+		_ = bar.Add(1)
+		cosmosSdk := ""
 		// If it's a Golang project check if it uses the Cosmos SDK
 		if strings.ToLower(r.Language) == "go" {
 			cosmosSdk, err = client.IsCosmosSDK(r.Owner.Login, r.Name, r.DefaultBranch)
@@ -53,7 +63,17 @@ func GetProjects() (result []model.Project, err error) {
 			projects = append(projects, project)
 		}
 	}
-	sort.Sort(sort.Reverse(ByLastCommit(projects)))
+
+	_ = bar.Finish()
+	switch sortBy {
+	case "stars":
+		sort.Sort(sort.Reverse(ByStars(projects)))
+	case "forks":
+		sort.Sort(sort.Reverse(ByForks(projects)))
+	default:
+		sort.Sort(sort.Reverse(ByLastCommit(projects)))
+	}
+
 	return projects, nil
 }
 
@@ -68,7 +88,7 @@ func PrintProjectsTable(projects []model.Project) {
 			{Align: simpletable.AlignCenter, Text: "URL"},
 			//{Align: simpletable.AlignCenter, Text: "DESCRIPTION"},
 			{Align: simpletable.AlignCenter, Text: "LANGUAGE"},
-			{Align: simpletable.AlignCenter, Text: "COSMOS SDK (BRANCH)"},
+			{Align: simpletable.AlignCenter, Text: "COSMOS SDK (DEFAULT BRANCH)"},
 			{Align: simpletable.AlignCenter, Text: "LICENSE"},
 			{Align: simpletable.AlignCenter, Text: "STARS"},
 			{Align: simpletable.AlignCenter, Text: "FORKS"},

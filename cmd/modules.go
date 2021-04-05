@@ -32,7 +32,7 @@ with the 'cosmos-sdk' topic and the tool crawls each repository
 looking for a folder named 'x' in the repository.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		// Fetch projects
-		projects, err := controller.GetProjects()
+		projects, err := controller.GetProjects("commit")
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
