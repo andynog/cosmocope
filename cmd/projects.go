@@ -15,7 +15,7 @@ var sortBy string
 // projectsCmd represents the projects command
 var projectsCmd = &cobra.Command{
 	Use:   "projects",
-	Short: "Find Cosmos SDK projects",
+	Short: "Find Cosmos projects",
 	Long:  `
 This command searches for projects on Github that are tagged with the 'cosmos-sdk' topic`,
 	Run: func(cmd *cobra.Command, args []string) {
@@ -23,6 +23,7 @@ This command searches for projects on Github that are tagged with the 'cosmos-sd
 		if len(sortBy) > 0 {
 			if err := validateSort(); err != nil {
 				fmt.Fprintln(os.Stderr, "Error: ", err)
+				cmd.Usage()
 				os.Exit(1)
 			}
 		}
