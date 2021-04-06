@@ -5,10 +5,12 @@ import (
 	"fmt"
 	"github.com/hako/durafmt"
 	_ "github.com/hako/durafmt"
+	"github.com/rogpeppe/go-internal/modfile"
 	"io/ioutil"
 	"net/http"
 	"os"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -139,4 +141,87 @@ func GetContentFromGithub(owner string, repo string) (result GithubContentResult
 		return nil, err
 	}
 	return contentResult, nil
+}
+
+// Function that calls the Github API to retrieve releases
+// from a Github repo
+func GetReleasesFromGithub(owner string, repo string) (result GithubReleasesResult, err error) {
+	var releaseResult GithubReleasesResult
+	url := "https://api.github.com/repos/" + owner + "/" + repo + "/releases"
+
+	method := "GET"
+
+	client := &http.Client{
+	}
+	req, err := http.NewRequest(method, url, nil)
+	req.Header.Add("Accept", "application/vnd.github.mercy-preview+json")
+	if err != nil {
+		fmt.Println(err)
+	}
+	res, err := client.Do(req)
+
+	// Check if rate limit reached
+	if (err != nil) || (res.StatusCode != 200)  {
+		val, ok := res.Header["X-Ratelimit-Remaining"]
+		if ok && (val[0] == "0") {
+			val, ok := res.Header["X-Ratelimit-Reset"]
+			if ok {
+				remaining, err := strconv.Atoi(val[0])
+				if err != nil {
+					return releaseResult, &RateLimitError{	Remaining: 0 }
+				} else {
+					return releaseResult, &RateLimitError{	Remaining: int64(remaining) }
+				}
+			}
+		}
+	}
+
+	defer res.Body.Close()
+	body, err := ioutil.ReadAll(res.Body)
+	err = json.Unmarshal(body, &releaseResult)
+	if err != nil {
+		return releaseResult, err
+	} else {
+		return releaseResult, nil
+	}
+}
+
+
+// Function that fetches the go.mod from a repository
+// If it finds a dependency on Cosmos SDK return a
+// boolean value indicating this is a project that
+// uses the Cosmos SDK
+func IsCosmosSDK(owner string, repo string, branch string) (result string, err error) {
+	url := "https://raw.githubusercontent.com/" + owner + "/" + repo + "/" + branch + "/go.mod"
+	method := "GET"
+	client := &http.Client {}
+	req, err := http.NewRequest(method, url, nil)
+	res, err := client.Do(req)
+
+	// Check if rate limit reached
+	if (err != nil) || (res.StatusCode != 200) {
+		return "", err
+	}
+
+	defer res.Body.Close()
+	data, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return "", err
+	}
+	if res.StatusCode == http.StatusNotFound {
+		return "", nil
+	}
+
+	f, err := modfile.Parse(url, data, nil)
+	if err != nil {
+		// ignore err
+		return "", err
+	}
+
+	for _, r := range f.Require {
+		if strings.ToLower(r.Mod.Path) == "github.com/cosmos/cosmos-sdk" {
+			return r.Mod.Version, nil
+		}
+	}
+	return "", nil
 }

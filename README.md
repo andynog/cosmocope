@@ -27,28 +27,28 @@ go get github.com/andynog/cosmocope/v2
 To find more information about the tool help and usage run the following command:
 
 ```
-cosmoscope --help
+cosmoscope discover --help
 ```
 
 A help message will be displayed:
 
 ```
-This tool allows you to crawl Github in order to discover 
-Cosmos (cosmos.network) related projects. Currently, the 
-only source crawled by the tool is Github. It leverages 
-Github's search API to discover projects and only public 
-repositories can be crawled.
+$ cosmocope discover --help
+Find repositories, releases, and modules for projects in the Cosmos ecosystem.
 
 Usage:
-  cosmocope [command]
+  cosmocope discover [flags]
+  cosmocope discover [command]
 
 Available Commands:
-  discover    Find projects, tools, libraries and modules for the Cosmos ecosystem
-  help        Help about any command
+  modules     Find Cosmos SDK modules
+  projects    Find Cosmos projects
+  releases    Find Github repository releases
 
 Flags:
-  -h, --help      help for cosmocope
-  -v, --version   version for cosmocope
+  -h, --help   help for discover
+
+Use "cosmocope discover [command] --help" for more information about a command.
 ```
 
 ## Discover commands
@@ -87,23 +87,49 @@ This command usually takes under 30 seconds to return the results. This command 
 **NOTE:** This command doesn't guarantee that the folders shown are actually Cosmos SDK modules. The intention is to use this tool for "discoverability" only. For an official list of modules, please check [Atlas](https://atlas.cosmos.network) which is the official **Cosmos SDK module registry**.
 
 ```
-$ cosmocope discover projects --help
+$ cosmocope discover modules --help
 
-This command searches for projects on Github that are tagged with the 'cosmos-sdk' topic
+This command searches for projects on Github that are tagged 
+with the 'cosmos-sdk' topic and the tool crawls each repository 
+looking for a folder named 'x' in the repository.
 
 Usage:
-  cosmocope discover projects [flags]
+  cosmocope discover modules [flags]
 
 Flags:
-  -h, --help   help for projects
+  -h, --help   help for modules
   -j, --json   Output results to JSON
-
 ```
 
 Run this command from a terminal shell:
 
 ```
 cosmocope discover modules
+```
+
+
+### Discovering releases
+
+This command will fetch all the releases for a Githube repository. 
+
+```
+$ cosmocope discover releases --help
+
+This command lists the releases for a Github repository.
+
+Usage:
+  cosmocope discover releases [flags]
+
+Flags:
+  -h, --help          help for releases
+  -j, --json          Output results to JSON
+  -r, --repo string   Specify the Github Repository URL (e.g. https://github.com/cosmos/cosmos-sdk
+```
+
+Run this command from a terminal shell:
+
+```
+cosmocope discover releases
 ```
 
 ### JSON output
@@ -120,6 +146,12 @@ If you need a JSON output instead of a printed table, use the `--json` or `-j` f
   
     ```
    cosmocope discover modules --json
+   ```
+  
+* Releases 
+
+    ```
+   cosmocope discover releases --json
    ```
 
 ### FAQ

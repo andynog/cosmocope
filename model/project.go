@@ -14,4 +14,6 @@ type Project struct {
 	Forks       int       `json:"forks"`
 	LastCommit  time.Time `json:"lastcommit"`
 	Modules     []Module  `json:"modules,omitempty"`
+	Branch      string    `json:"branch"`
+	CosmosSDK   string     `json:"cosmos_sdk,omitempty"`
 }

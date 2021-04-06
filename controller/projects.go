@@ -2,6 +2,7 @@ package controller
 
 import (
 	"fmt"
+	"github.com/schollz/progressbar/v3"
 	"sort"
 	"strings"
 
@@ -12,21 +13,36 @@ import (
 	"github.com/dustin/go-humanize"
 )
 
-/// Logic to sort by Last Commit
-type ByLastCommit []model.Project
-
-func (a ByLastCommit) Len() int           { return len(a) }
-func (a ByLastCommit) Less(i, j int) bool { return a[i].LastCommit.UnixNano() < a[j].LastCommit.UnixNano() }
-func (a ByLastCommit) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
-
-func GetProjects() (result []model.Project, err error) {
+func GetProjects(sortBy string) (result []model.Project, err error) {
 	topic := "cosmos-sdk"
 	var projects []model.Project
 	searchResults, err := client.SearchGithub(topic)
 	if err != nil {
 		return nil, fmt.Errorf("problems fetching projects")
 	}
+
+	// Progress bar
+	bar := progressbar.NewOptions(len(searchResults.Items),
+		progressbar.OptionEnableColorCodes(true),
+		progressbar.OptionShowBytes(false),
+		progressbar.OptionSetWidth(15),
+		progressbar.OptionSetDescription("[cyan] Crawling Github repositories. Looking for Cosmos projects...:"),
+		progressbar.OptionSetTheme(progressbar.Theme{
+			Saucer:        "[green]=",
+			SaucerHead:    "[green]>",
+			SaucerPadding: " ",
+			BarStart:      "[",
+			BarEnd:        "]",
+		}))
+
 	for _, r := range searchResults.Items {
+		_ = bar.Add(1)
+		cosmosSdk := ""
+		// If it's a Golang project check if it uses the Cosmos SDK
+		if strings.ToLower(r.Language) == "go" {
+			cosmosSdk, _ = client.IsCosmosSDK(r.Owner.Login, r.Name, r.DefaultBranch)
+		}
+
 		project := model.Project{
 			Name:        r.Name,
 			Owner:       r.Owner.Login,
@@ -36,7 +52,10 @@ func GetProjects() (result []model.Project, err error) {
 			License:     r.License.SpdxID,
 			Stars:       r.StargazersCount,
 			Forks:       r.ForksCount,
-			LastCommit: r.PushedAt,
+			LastCommit:  r.PushedAt,
+			Branch:      r.DefaultBranch,
+			CosmosSDK:   cosmosSdk,
+
 		}
 
 		// Logic to remove Azure CosmosDB listings
@@ -44,7 +63,17 @@ func GetProjects() (result []model.Project, err error) {
 			projects = append(projects, project)
 		}
 	}
-	sort.Sort(sort.Reverse(ByLastCommit(projects)))
+
+	_ = bar.Finish()
+	switch sortBy {
+	case "stars":
+		sort.Sort(sort.Reverse(ByStars(projects)))
+	case "forks":
+		sort.Sort(sort.Reverse(ByForks(projects)))
+	default:
+		sort.Sort(sort.Reverse(ByLastCommit(projects)))
+	}
+
 	return projects, nil
 }
 
@@ -59,8 +88,10 @@ func PrintProjectsTable(projects []model.Project) {
 			{Align: simpletable.AlignCenter, Text: "URL"},
 			//{Align: simpletable.AlignCenter, Text: "DESCRIPTION"},
 			{Align: simpletable.AlignCenter, Text: "LANGUAGE"},
+			{Align: simpletable.AlignCenter, Text: "COSMOS SDK (DEFAULT BRANCH)"},
 			{Align: simpletable.AlignCenter, Text: "LICENSE"},
 			{Align: simpletable.AlignCenter, Text: "STARS"},
+			{Align: simpletable.AlignCenter, Text: "FORKS"},
 			{Align: simpletable.AlignCenter, Text: "LAST COMMIT"},
 		},
 	}
@@ -73,14 +104,22 @@ func PrintProjectsTable(projects []model.Project) {
 		//} else {
 		//	description = p.Description
 		//}
+		var sdkBranch string
+		if len(p.CosmosSDK) > 0 {
+			sdkBranch = p.CosmosSDK + " (" + p.Branch + ")"
+		} else {
+			sdkBranch = ""
+		}
 		row := []*simpletable.Cell{
 			{Text: p.Owner},
 			{Text: p.Name},
 			{Text: p.Url},
 			//{Text: strings.ToValidUTF8(description, "")},
 			{Text: p.Language},
+			{Text: sdkBranch},
 			{Text: p.License},
 			{Align: simpletable.AlignCenter, Text: fmt.Sprintf("%d", p.Stars)},
+			{Align: simpletable.AlignCenter, Text: fmt.Sprintf("%d", p.Forks)},
 			{Text: humanize.Time(p.LastCommit)},
 		}
 		table.Body.Cells = append(table.Body.Cells, row)
@@ -91,7 +130,7 @@ func PrintProjectsTable(projects []model.Project) {
 	// Table Footer
 	table.Footer = &simpletable.Footer{
 		Cells: []*simpletable.Cell{
-			{Align: simpletable.AlignRight, Text: "Total:"},
+			{Align: simpletable.AlignRight, Text: "Total Repositories Found:"},
 			{Align: simpletable.AlignLeft, Span: len(table.Header.Cells) - 1, Text: fmt.Sprintf("%d", count)},
 		},
 	}

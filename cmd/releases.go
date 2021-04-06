@@ -16,44 +16,45 @@ limitations under the License.
 package cmd
 
 import (
+	"flag"
 	"fmt"
 	"github.com/andynog/cosmocope/v2/controller"
 	"github.com/spf13/cobra"
 	"os"
 )
 
+var repo string
+
 // modulesCmd represents the modules command
-var modulesCmd = &cobra.Command{
-	Use:   "modules",
-	Short: "Find Cosmos SDK modules",
+var releasesCmd = &cobra.Command{
+	Use:   "releases",
+	Short: "Find Github repository releases",
 	Long: `
-This command searches for projects on Github that are tagged 
-with the 'cosmos-sdk' topic and the tool crawls each repository 
-looking for a folder named 'x' in the repository.`,
+This command lists the releases for a Github repository.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		// Fetch projects
-		projects, err := controller.GetProjects("commit")
-		if err != nil {
-			fmt.Println(err)
+		flag.Parse()
+		if len(repo) == 0 {
+			fmt.Fprintln(os.Stderr, "Please specify a valid Github repository URL")
+			_ = cmd.Usage()
 			os.Exit(1)
 		}
 
-		// Fetch modules for projects
-		modules, err := controller.FindModulesInProjects(projects)
+		releases, err := controller.GetReleases(repo)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
 
 		if jsonOutput {
-			controller.PrintModulesJSON(modules)
+			controller.PrintReleasesJSON(releases)
 		} else {
-			controller.PrintModulesTable(modules)
+			controller.PrintReleasesTable(releases)
 		}
 	},
 }
 
 func init() {
-	discoverCmd.AddCommand(modulesCmd)
-	modulesCmd.PersistentFlags().BoolVarP(&jsonOutput, "json", "j", false, "Output results to JSON")
+	discoverCmd.AddCommand(releasesCmd)
+	releasesCmd.PersistentFlags().BoolVarP(&jsonOutput, "json", "j", false, "Output results to JSON")
+	releasesCmd.PersistentFlags().StringVarP(&repo, "repo", "r", "", "Specify the Github Repository URL (e.g. https://github.com/cosmos/cosmos-sdk")
 }
