@@ -40,7 +40,7 @@ func GetProjects(sortBy string) (result []model.Project, err error) {
 		cosmosSdk := ""
 		// If it's a Golang project check if it uses the Cosmos SDK
 		if strings.ToLower(r.Language) == "go" {
-			cosmosSdk, err = client.IsCosmosSDK(r.Owner.Login, r.Name, r.DefaultBranch)
+			cosmosSdk, _ = client.IsCosmosSDK(r.Owner.Login, r.Name, r.DefaultBranch)
 		}
 
 		project := model.Project{

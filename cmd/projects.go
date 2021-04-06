@@ -23,7 +23,7 @@ This command searches for projects on Github that are tagged with the 'cosmos-sd
 		if len(sortBy) > 0 {
 			if err := validateSort(); err != nil {
 				fmt.Fprintln(os.Stderr, "Error: ", err)
-				cmd.Usage()
+				_ = cmd.Usage()
 				os.Exit(1)
 			}
 		}

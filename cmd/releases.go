@@ -35,7 +35,7 @@ This command lists the releases for a Github repository.`,
 		flag.Parse()
 		if len(repo) == 0 {
 			fmt.Fprintln(os.Stderr, "Please specify a valid Github repository URL")
-			cmd.Usage()
+			_ = cmd.Usage()
 			os.Exit(1)
 		}
 
