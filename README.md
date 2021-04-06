@@ -27,7 +27,7 @@ go get github.com/andynog/cosmocope/v2
 To find more information about the tool help and usage run the following command:
 
 ```
-cosmoscope discover --help
+cosmocope discover --help
 ```
 
 A help message will be displayed:
