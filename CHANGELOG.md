@@ -1,9 +1,10 @@
 # Changelog
 
-## Unreleased
+## v0.0.2
 
 ### FEATURES
 
+- Implemented `discover releases` command ([#1])
 
 ### IMPROVEMENTS
 
@@ -13,6 +14,7 @@
 
 ### BUG FIXES
 
+[#1]: https://github.com/andynog/cosmocope/issues/1
 [#2]: https://github.com/andynog/cosmocope/issues/2
 [#4]: https://github.com/andynog/cosmocope/issues/4
 [#5]: https://github.com/andynog/cosmocope/issues/5

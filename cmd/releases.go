@@ -28,7 +28,7 @@ var repo string
 // modulesCmd represents the modules command
 var releasesCmd = &cobra.Command{
 	Use:   "releases",
-	Short: "Find Cosmos projects releases",
+	Short: "Find Github repository releases",
 	Long: `
 This command lists the releases for a Github repository.`,
 	Run: func(cmd *cobra.Command, args []string) {

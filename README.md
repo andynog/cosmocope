@@ -27,28 +27,28 @@ go get github.com/andynog/cosmocope/v2
 To find more information about the tool help and usage run the following command:
 
 ```
-cosmoscope --help
+cosmoscope discover --help
 ```
 
 A help message will be displayed:
 
 ```
-This tool allows you to crawl Github in order to discover 
-Cosmos (cosmos.network) related projects. Currently, the 
-only source crawled by the tool is Github. It leverages 
-Github's search API to discover projects and only public 
-repositories can be crawled.
+$ cosmocope discover --help
+Find repositories, releases, and modules for projects in the Cosmos ecosystem.
 
 Usage:
-  cosmocope [command]
+  cosmocope discover [flags]
+  cosmocope discover [command]
 
 Available Commands:
-  discover    Find projects, tools, libraries and modules for the Cosmos ecosystem
-  help        Help about any command
+  modules     Find Cosmos SDK modules
+  projects    Find Cosmos projects
+  releases    Find Github repository releases
 
 Flags:
-  -h, --help      help for cosmocope
-  -v, --version   version for cosmocope
+  -h, --help   help for discover
+
+Use "cosmocope discover [command] --help" for more information about a command.
 ```
 
 ## Discover commands
@@ -107,6 +107,31 @@ Run this command from a terminal shell:
 cosmocope discover modules
 ```
 
+
+### Discovering releases
+
+This command will fetch all the releases for a Githube repository. 
+
+```
+$ cosmocope discover releases --help
+
+This command lists the releases for a Github repository.
+
+Usage:
+  cosmocope discover releases [flags]
+
+Flags:
+  -h, --help          help for releases
+  -j, --json          Output results to JSON
+  -r, --repo string   Specify the Github Repository URL (e.g. https://github.com/cosmos/cosmos-sdk
+```
+
+Run this command from a terminal shell:
+
+```
+cosmocope discover releases
+```
+
 ### JSON output
 
 If you need a JSON output instead of a printed table, use the `--json` or `-j` flag. The JSON output also might include additional data (e.g. description and forks) that is not shown in the default output (table)
@@ -121,6 +146,12 @@ If you need a JSON output instead of a printed table, use the `--json` or `-j` f
   
     ```
    cosmocope discover modules --json
+   ```
+  
+* Releases 
+
+    ```
+   cosmocope discover releases --json
    ```
 
 ### FAQ

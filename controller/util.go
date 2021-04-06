@@ -12,7 +12,7 @@ func ParseGithubURL(repo string) (owner string, name string, err error) {
 		return "", "", err
 	}
 	paths := strings.Split(u.Path, "/")
-	if strings.ToLower(paths[0]) != "github.com" {
+	if strings.ToLower(u.Host) != "github.com" {
 		return "", "", fmt.Errorf("invalid Github URL")
 	}
 	return paths[1], paths[2], nil
