@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.0.2
+## v0.0.3
 
 ### FEATURES
 
@@ -18,6 +18,11 @@
 [#2]: https://github.com/andynog/cosmocope/issues/2
 [#4]: https://github.com/andynog/cosmocope/issues/4
 [#5]: https://github.com/andynog/cosmocope/issues/5
+
+## v0.0.2
+*March 16, 2021*
+
+- Fixed dependencies issues
 
 ## v0.0.1
 *March 7, 2021*
