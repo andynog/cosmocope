@@ -43,6 +43,7 @@ func GetReleases(url string) (result []model.Release, err error) {
 			TagName:     r.TagName,
 			Url:         r.HTMLURL,
 			Draft:       r.Draft,
+			PreRelease:  r.Prerelease,
 			Description: r.Body,
 			PublishedAt: r.PublishedAt,
 		}
@@ -53,6 +54,16 @@ func GetReleases(url string) (result []model.Release, err error) {
 	_ = bar.Finish()
 
 	return releases, nil
+}
+
+func GetLatestRelease(releases []model.Release) (release *model.Release, err error) {
+	for _, r := range releases {
+		if !r.PreRelease && !r.Draft {
+			//TODO: client.GetDependencies
+			return &r, nil
+		}
+	}
+	return nil, fmt.Errorf("can't find a release")
 }
 
 // Print Releases in Table format

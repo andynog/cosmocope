@@ -14,6 +14,12 @@ import (
 	"time"
 )
 
+const (
+	repoTendermint = "github.com/tendermint/tendermint"
+	repoCosmosSDK = "github.com/cosmos/cosmos-sdk"
+	repoIBC = "github.com/cosmos/ibc-go"
+)
+
 type RateLimitError struct {
 	Remaining int64
 }
@@ -62,6 +68,10 @@ func SearchGithub(topic string) (result GithubSearchResult, err error) {
 	if err != nil {
 		fmt.Println(err)
 	}
+	// Authenticate the API call
+	id, secret := GetCredentials()
+	req.SetBasicAuth(id,secret)
+
 	res, err := client.Do(req)
 
 	// Check if rate limit reached
@@ -105,6 +115,10 @@ func GetContentFromGithub(owner string, repo string) (result GithubContentResult
 	if err != nil {
 		return nil, err
 	}
+
+	// Authenticate the API call
+	id, secret := GetCredentials()
+	req.SetBasicAuth(id,secret)
 
 	res, err := client.Do(req)
 
@@ -158,6 +172,10 @@ func GetReleasesFromGithub(owner string, repo string) (result GithubReleasesResu
 	if err != nil {
 		fmt.Println(err)
 	}
+	// Authenticate the API call
+	id, secret := GetCredentials()
+	req.SetBasicAuth(id,secret)
+
 	res, err := client.Do(req)
 
 	// Check if rate limit reached
@@ -186,12 +204,12 @@ func GetReleasesFromGithub(owner string, repo string) (result GithubReleasesResu
 	}
 }
 
-
 // Function that fetches the go.mod from a repository
-// If it finds a dependency on Cosmos SDK return a
-// boolean value indicating this is a project that
-// uses the Cosmos SDK
-func IsCosmosSDK(owner string, repo string, branch string) (result string, err error) {
+// If it finds a dependency.go on Cosmos SDK or Tendermint
+// return the versions
+func GetDependencies(owner string, repo string, branch string) (sdk string, tendermint string, ibc string, err error) {
+	sdkVersion := ""
+	tendermintVersion := ""
 	url := "https://raw.githubusercontent.com/" + owner + "/" + repo + "/" + branch + "/go.mod"
 	method := "GET"
 	client := &http.Client {}
@@ -200,28 +218,51 @@ func IsCosmosSDK(owner string, repo string, branch string) (result string, err e
 
 	// Check if rate limit reached
 	if (err != nil) || (res.StatusCode != 200) {
-		return "", err
+		return "", "", "", err
 	}
 
 	defer res.Body.Close()
 	data, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		return "", err
+		return "", "", "", err
 	}
 	if res.StatusCode == http.StatusNotFound {
-		return "", nil
+		return "", "", "", nil
 	}
 
 	f, err := modfile.Parse(url, data, nil)
 	if err != nil {
 		// ignore err
-		return "", err
+		return "", "", "", err
 	}
 
 	for _, r := range f.Require {
-		if strings.ToLower(r.Mod.Path) == "github.com/cosmos/cosmos-sdk" {
-			return r.Mod.Version, nil
+		if strings.ToLower(r.Mod.Path) == repoCosmosSDK {
+			sdkVersion = r.Mod.Version
+		}
+		if strings.ToLower(r.Mod.Path) == repoTendermint {
+			tendermintVersion = r.Mod.Version
+		}
+		if strings.ToLower(r.Mod.Path) == "repoIBC" {
+			ibc = r.Mod.Version
 		}
 	}
-	return "", nil
+	return sdkVersion, tendermintVersion, ibc,nil
+}
+
+func GetCredentials() (clientID string, clientSecret string) {
+	// Get the CC_GITHUB_CLIENT_ID environment variable
+	var found bool
+	clientID, found = os.LookupEnv("CC_GITHUB_CLIENT_ID")
+	if !found {
+		fmt.Println("Failed to retrieve Github Client ID. Please set the 'CC_GITHUB_CLIENT_ID' environment variable")
+		os.Exit(1)
+	}
+	// Get the CC_GITHUB_CLIENT_SECRET environment variable
+	clientSecret, found = os.LookupEnv("CC_GITHUB_CLIENT_SECRET")
+	if !found {
+		fmt.Println("Failed to retrieve Github Client Secret. Please set the 'CC_GITHUB_CLIENT_SECRET' environment variable")
+		os.Exit(1)
+	}
+	return clientID, clientSecret
 }

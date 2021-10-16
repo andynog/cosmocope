@@ -13,7 +13,7 @@ type Project struct {
 	Stars       int       `json:"stars"`
 	Forks       int       `json:"forks"`
 	LastCommit  time.Time `json:"lastcommit"`
-	Modules     []Module  `json:"modules,omitempty"`
+	Modules     []Module  `json:"modules"`
 	Branch      string    `json:"branch"`
-	CosmosSDK   string     `json:"cosmos_sdk,omitempty"`
+	Releases    []Release `json:"releases"`
 }
