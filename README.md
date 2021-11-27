@@ -19,8 +19,10 @@ To download and install this tool, please ensure
 [Go v1.16 or later is installed](https://golang.org/dl/), then run the following command from a terminal shell:
 
 ```
-go get github.com/andynog/cosmocope/v2
+go install github.com/andynog/cosmocope/v2@latest
 ```
+
+Please ensure you have the `GOBIN` environment variable properly set.
 
 ## Help and Usage 
 
