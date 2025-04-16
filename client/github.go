@@ -3,15 +3,16 @@ package client
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/hako/durafmt"
-	_ "github.com/hako/durafmt"
-	"github.com/rogpeppe/go-internal/modfile"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"os"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/hako/durafmt"
+	_ "github.com/hako/durafmt"
+	"golang.org/x/mod/modfile"
 )
 
 type RateLimitError struct {
@@ -81,7 +82,7 @@ func SearchGithub(topic string) (result GithubSearchResult, err error) {
 	}
 
 	defer res.Body.Close()
-	body, err := ioutil.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
 	err = json.Unmarshal(body, &searchRslt)
 	if err != nil {
 		return searchRslt, err
@@ -129,7 +130,7 @@ func GetContentFromGithub(owner string, repo string) (result GithubContentResult
 	}
 
 	defer res.Body.Close()
-	body, err := ioutil.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		return nil, err
 	}
@@ -177,7 +178,7 @@ func GetReleasesFromGithub(owner string, repo string) (result GithubReleasesResu
 	}
 
 	defer res.Body.Close()
-	body, err := ioutil.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
 	err = json.Unmarshal(body, &releaseResult)
 	if err != nil {
 		return releaseResult, err
@@ -196,6 +197,9 @@ func IsCosmosSDK(owner string, repo string, branch string) (result string, err e
 	method := "GET"
 	client := &http.Client {}
 	req, err := http.NewRequest(method, url, nil)
+	if (err != nil) {
+		return "", err
+	}
 	res, err := client.Do(req)
 
 	// Check if rate limit reached
@@ -204,7 +208,7 @@ func IsCosmosSDK(owner string, repo string, branch string) (result string, err e
 	}
 
 	defer res.Body.Close()
-	data, err := ioutil.ReadAll(res.Body)
+	data, err := io.ReadAll(res.Body)
 	if err != nil {
 		return "", err
 	}
