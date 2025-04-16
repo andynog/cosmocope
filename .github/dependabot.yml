@@ -1,0 +1,17 @@
+# Update Go Dependencies
+
+version: 2
+updates:
+  - package-ecosystem: "gomod" # See documentation for possible values
+    directory: "/" # Location of package manifests
+    schedule:
+      interval: "weekly" 
+    target-branch: "main"
+    open-pull-requests-limit: 10
+    labels:
+      - dependencies
+      - automerge
+    groups:
+      all-go-modules:
+        patterns:
+          - "*"  # Groups all Go module updates into a single PR
