@@ -2,23 +2,26 @@ package controller
 
 import (
 	"fmt"
-	"github.com/schollz/progressbar/v3"
 	"sort"
 	"strings"
 
+	"github.com/schollz/progressbar/v3"
+
 	"encoding/json"
+
 	"github.com/alexeyco/simpletable"
 	"github.com/andynog/cosmocope/v2/client"
 	"github.com/andynog/cosmocope/v2/model"
 	"github.com/dustin/go-humanize"
 )
 
+// GetProjects fetches projects from Github using the Search API
 func GetProjects(sortBy string) (result []model.Project, err error) {
 	topic := "cosmos-sdk"
 	var projects []model.Project
 	searchResults, err := client.SearchGithub(topic)
 	if err != nil {
-		return nil, fmt.Errorf("problems fetching projects")
+		return nil, fmt.Errorf("problems fetching projects: %w", err)
 	}
 
 	// Progress bar
@@ -46,7 +49,7 @@ func GetProjects(sortBy string) (result []model.Project, err error) {
 		project := model.Project{
 			Name:        r.Name,
 			Owner:       r.Owner.Login,
-			Url:         r.HTMLURL,
+			URL:         r.HTMLURL,
 			Description: r.Description,
 			Language:    r.Language,
 			License:     r.License.SpdxID,
@@ -55,7 +58,6 @@ func GetProjects(sortBy string) (result []model.Project, err error) {
 			LastCommit:  r.PushedAt,
 			Branch:      r.DefaultBranch,
 			CosmosSDK:   cosmosSdk,
-
 		}
 
 		// Logic to remove Azure CosmosDB listings
@@ -77,7 +79,7 @@ func GetProjects(sortBy string) (result []model.Project, err error) {
 	return projects, nil
 }
 
-// Print Projects in Table format
+// PrintProjectsTable prints Projects in Table format
 func PrintProjectsTable(projects []model.Project) {
 	table := simpletable.New()
 
@@ -86,7 +88,6 @@ func PrintProjectsTable(projects []model.Project) {
 			{Align: simpletable.AlignCenter, Text: "OWNER"},
 			{Align: simpletable.AlignCenter, Text: "NAME"},
 			{Align: simpletable.AlignCenter, Text: "URL"},
-			//{Align: simpletable.AlignCenter, Text: "DESCRIPTION"},
 			{Align: simpletable.AlignCenter, Text: "LANGUAGE"},
 			{Align: simpletable.AlignCenter, Text: "COSMOS SDK (DEFAULT BRANCH)"},
 			{Align: simpletable.AlignCenter, Text: "LICENSE"},
@@ -98,12 +99,6 @@ func PrintProjectsTable(projects []model.Project) {
 	count := 0
 
 	for _, p := range projects {
-		//var description string
-		//if len(p.Description) > 28 {
-		//	description = p.Description[0:26] + "..."
-		//} else {
-		//	description = p.Description
-		//}
 		var sdkBranch string
 		if len(p.CosmosSDK) > 0 {
 			sdkBranch = p.CosmosSDK + " (" + p.Branch + ")"
@@ -113,8 +108,7 @@ func PrintProjectsTable(projects []model.Project) {
 		row := []*simpletable.Cell{
 			{Text: p.Owner},
 			{Text: p.Name},
-			{Text: p.Url},
-			//{Text: strings.ToValidUTF8(description, "")},
+			{Text: p.URL},
 			{Text: p.Language},
 			{Text: sdkBranch},
 			{Text: p.License},
@@ -140,7 +134,7 @@ func PrintProjectsTable(projects []model.Project) {
 	fmt.Println(table.String())
 }
 
-// Print Projects in JSON format
+// PrintProjectsJSON prints Projects in JSON format
 func PrintProjectsJSON(projects []model.Project) {
 	json, err := json.MarshalIndent(projects, "", " ")
 	if err != nil {

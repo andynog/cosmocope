@@ -6,6 +6,7 @@ import (
 	"strings"
 )
 
+// ParseGithubURL parses a GitHub repository URL and returns the owner and repository name.
 func ParseGithubURL(repo string) (owner string, name string, err error) {
 	u, err := url.Parse(repo)
 	if err != nil {

@@ -18,7 +18,7 @@ var projectsCmd = &cobra.Command{
 	Short: "Find Cosmos projects",
 	Long:  `
 This command searches for projects on Github that are tagged with the 'cosmos-sdk' topic`,
-	Run: func(cmd *cobra.Command, args []string) {
+	Run: func(cmd *cobra.Command, _ []string) {
 		flag.Parse()
 		if len(sortBy) > 0 {
 			if err := validateSort(); err != nil {
@@ -54,5 +54,5 @@ func validateSort() error {
 			return nil
 		}
 	}
-	return fmt.Errorf("value '%s' is invalid for flag 'sort', valid values are: %v", sortBy, strings.Join(validSort[:], ","))
+	return fmt.Errorf("value '%s' is invalid for flag 'sort', valid values are: %v", sortBy, strings.Join(validSort, ","))
 }

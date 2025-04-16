@@ -1,20 +1,21 @@
+// Package controller provides the business logic for the application
 package controller
 
 import (
 	"encoding/json"
 	"fmt"
+
 	"github.com/alexeyco/simpletable"
 	"github.com/andynog/cosmocope/v2/client"
 	"github.com/andynog/cosmocope/v2/model"
 	"github.com/schollz/progressbar/v3"
 )
 
-
+// FindModulesInProjects fetches modules from Github repositories
 func FindModulesInProjects(projects []model.Project) (result []model.Module, err error) {
 	var modules []model.Module
 	// Progress Bar
 	bar := progressbar.NewOptions(len(projects),
-		//progressbar.OptionSetWriter(ansi.NewAnsiStdout()),
 		progressbar.OptionEnableColorCodes(true),
 		progressbar.OptionShowBytes(false),
 		progressbar.OptionSetWidth(15),
@@ -28,16 +29,16 @@ func FindModulesInProjects(projects []model.Project) (result []model.Module, err
 		}))
 	for _, p := range projects {
 		_ = bar.Add(1)
-		hasModulesFolder := client.LookForModules(p.Url)
+		hasModulesFolder := client.LookForModules(p.URL)
 		if hasModulesFolder {
 			result, err := client.GetContentFromGithub(p.Owner, p.Name)
 			if err != nil {
-				return nil, fmt.Errorf("error fetching modules: %s", err)
+				return nil, fmt.Errorf("error fetching modules: %w", err)
 			}
 			if len(result) > 0 {
 				for _, m := range result {
 					if m.Type == "dir" {
-						module := model.Module{Name: m.Name, Owner: p.Owner, Repo: p.Name, Url: m.HTMLURL}
+						module := model.Module{Name: m.Name, Owner: p.Owner, Repo: p.Name, URL: m.HTMLURL}
 						modules = append(modules, module)
 					}
 				}
@@ -48,7 +49,7 @@ func FindModulesInProjects(projects []model.Project) (result []model.Module, err
 	return modules, nil
 }
 
-// Print Modules in Table format
+// PrintModulesTable prints modules in table format
 func PrintModulesTable(modules []model.Module) {
 	table := simpletable.New()
 
@@ -65,7 +66,7 @@ func PrintModulesTable(modules []model.Module) {
 		row := []*simpletable.Cell{
 			{Text: m.Name},
 			{Text: m.Owner + "/" + m.Repo},
-			{Text: m.Url},
+			{Text: m.URL},
 		}
 		table.Body.Cells = append(table.Body.Cells, row)
 		count++
@@ -85,7 +86,7 @@ func PrintModulesTable(modules []model.Module) {
 	fmt.Println(table.String())
 }
 
-// Print Modules in JSON format
+// PrintModulesJSON prints Modules in JSON format
 func PrintModulesJSON(modules []model.Module) {
 	json, err := json.MarshalIndent(modules, "", " ")
 	if err != nil {
