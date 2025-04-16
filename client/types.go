@@ -2,7 +2,7 @@ package client
 
 import "time"
 
-// Type returned when calling Github Search API
+// GithubSearchResult represents the result of a GitHub search API call
 type GithubSearchResult struct {
 	TotalCount        int  `json:"total_count"`
 	IncompleteResults bool `json:"incomplete_results"`
@@ -109,6 +109,7 @@ type GithubSearchResult struct {
 	} `json:"items"`
 }
 
+// GithubContentResult represents the result of a GitHub content API call
 type GithubContentResult []struct {
 	Name        string      `json:"name"`
 	Path        string      `json:"path"`
@@ -126,6 +127,7 @@ type GithubContentResult []struct {
 	} `json:"_links"`
 }
 
+// GithubReleasesResult represents the result of a GitHub releases API call
 type GithubReleasesResult []struct {
 	URL             string    `json:"url"`
 	HTMLURL         string    `json:"html_url"`

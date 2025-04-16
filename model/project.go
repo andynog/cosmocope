@@ -2,11 +2,11 @@ package model
 
 import "time"
 
-// Project
+// Project represents a GitHub project
 type Project struct {
 	Name        string    `json:"name"`
 	Owner       string    `json:"owner"`
-	Url         string    `json:"url"`
+	URL         string    `json:"url"`
 	Description string    `json:"description"`
 	Language    string    `json:"language"`
 	License     string    `json:"license"`
@@ -15,5 +15,5 @@ type Project struct {
 	LastCommit  time.Time `json:"lastcommit"`
 	Modules     []Module  `json:"modules,omitempty"`
 	Branch      string    `json:"branch"`
-	CosmosSDK   string     `json:"cosmos_sdk,omitempty"`
+	CosmosSDK   string    `json:"cosmos_sdk,omitempty"`
 }

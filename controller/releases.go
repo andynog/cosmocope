@@ -3,6 +3,7 @@ package controller
 import (
 	"encoding/json"
 	"fmt"
+
 	"github.com/alexeyco/simpletable"
 	"github.com/andynog/cosmocope/v2/client"
 	"github.com/andynog/cosmocope/v2/model"
@@ -10,6 +11,7 @@ import (
 	"github.com/schollz/progressbar/v3"
 )
 
+// GetReleases fetches releases from a Github repository
 func GetReleases(url string) (result []model.Release, err error) {
 	var releases []model.Release
 	owner, name, err := ParseGithubURL(url)
@@ -18,7 +20,7 @@ func GetReleases(url string) (result []model.Release, err error) {
 	}
 	releaseResult, err := client.GetReleasesFromGithub(owner, name)
 	if err != nil {
-		return nil, fmt.Errorf("problems fetching releases: %s", err)
+		return nil, fmt.Errorf("problems fetching releases: %w", err)
 	}
 
 	// Progress bar
@@ -41,7 +43,7 @@ func GetReleases(url string) (result []model.Release, err error) {
 		release := model.Release{
 			Name:        r.Name,
 			TagName:     r.TagName,
-			Url:         r.HTMLURL,
+			URL:         r.HTMLURL,
 			Draft:       r.Draft,
 			Description: r.Body,
 			PublishedAt: r.PublishedAt,
@@ -55,7 +57,7 @@ func GetReleases(url string) (result []model.Release, err error) {
 	return releases, nil
 }
 
-// Print Releases in Table format
+// PrintReleasesTable prints Releases in Table format
 func PrintReleasesTable(projects []model.Release) {
 	table := simpletable.New()
 
@@ -71,20 +73,12 @@ func PrintReleasesTable(projects []model.Release) {
 
 	for _, p := range projects {
 
-		//// Truncate description
-		//var description string
-		//if len(p.Description) > 28 {
-		//	description = p.Description[0:26] + "..."
-		//} else {
-		//	description = p.Description
-		//}
-
 		// Ignore draft releases
 		if !p.Draft {
 			row := []*simpletable.Cell{
 				{Text: p.Name},
 				{Text: p.TagName},
-				{Text: p.Url},
+				{Text: p.URL},
 				{Text: humanize.Time(p.PublishedAt)},
 			}
 			table.Body.Cells = append(table.Body.Cells, row)
@@ -106,7 +100,7 @@ func PrintReleasesTable(projects []model.Release) {
 	fmt.Println(table.String())
 }
 
-// Print Releases in JSON format
+// PrintReleasesJSON prints Releases in JSON format
 func PrintReleasesJSON(releases []model.Release) {
 	json, err := json.MarshalIndent(releases, "", " ")
 	if err != nil {

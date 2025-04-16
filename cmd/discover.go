@@ -1,3 +1,4 @@
+// Package cmd provides the command line interface for the application
 package cmd
 
 import (
@@ -11,7 +12,7 @@ var discoverCmd = &cobra.Command{
 	Use:   "discover",
 	Short: "Find repositories, releases, and modules for projects in the Cosmos ecosystem.",
 	Long:  `Find repositories, releases, and modules for projects in the Cosmos ecosystem.`,
-	Run: func(cmd *cobra.Command, args []string) {
+	Run: func(cmd *cobra.Command, _ []string) {
 		_ = cmd.Help()
 		os.Exit(1)
 	},
