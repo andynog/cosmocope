@@ -10,7 +10,7 @@ Updated Go version to 1.24 and refreshed dependencies. Improved linting configur
 
 ### IMPROVEMENTS
 
-- adding dependabot workkflow for go dependencies (#12)
+- adding dependabot workflow for go dependencies (#12)
 - update Go build GitHub action (#13)
 - update golangci-lint-action version (#14)
 - adding lint config and fixing linting issues (#16)
