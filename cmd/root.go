@@ -8,7 +8,7 @@ import (
 
 // Const for version
 const (
-	Version = "0.0.1"
+	Version = "0.1.0"
 )
 
 // rootCmd represents the base command when called without any subcommands
