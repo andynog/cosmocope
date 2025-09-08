@@ -6,9 +6,9 @@ require (
 	github.com/alexeyco/simpletable v1.0.0
 	github.com/dustin/go-humanize v1.0.1
 	github.com/hako/durafmt v0.0.0-20210608085754-5c1018a4e16b
-	github.com/rogpeppe/go-internal v1.14.1
 	github.com/schollz/progressbar/v3 v3.18.0
-	github.com/spf13/cobra v1.9.1
+	github.com/spf13/cobra v1.10.1
+	golang.org/x/mod v0.21.0
 )
 
 require (
@@ -16,9 +16,7 @@ require (
 	github.com/mattn/go-runewidth v0.0.16 // indirect
 	github.com/mitchellh/colorstring v0.0.0-20190213212951-d06e56a500db // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
-	github.com/spf13/pflag v1.0.6 // indirect
-	golang.org/x/crypto v0.37.0 // indirect
-	golang.org/x/mod v0.21.0 // indirect
+	github.com/spf13/pflag v1.0.9 // indirect
 	golang.org/x/sys v0.32.0 // indirect
 	golang.org/x/term v0.31.0 // indirect
 )
