@@ -1,6 +1,6 @@
 module github.com/andynog/cosmocope/v2
 
-go 1.24
+go 1.24.0
 
 require (
 	github.com/alexeyco/simpletable v1.0.0
@@ -8,7 +8,7 @@ require (
 	github.com/hako/durafmt v0.0.0-20210608085754-5c1018a4e16b
 	github.com/schollz/progressbar/v3 v3.18.0
 	github.com/spf13/cobra v1.10.1
-	golang.org/x/mod v0.21.0
+	golang.org/x/mod v0.28.0
 )
 
 require (
